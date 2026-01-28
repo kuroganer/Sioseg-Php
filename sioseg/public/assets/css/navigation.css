@@ -1,0 +1,356 @@
+/* --- NAVEGAÇÃO INTEGRADA AO HEADER EXISTENTE --- */
+/* Remove estilos conflitantes com .top-bar */
+.main-navigation {
+    /* Remove estilos que conflitam com .top-bar */
+    background: none;
+    box-shadow: none;
+    width: auto;
+    display: inline-flex;
+    justify-content: flex-start;
+    flex: 1; /* Ocupa o espaço disponível no meio do header */
+    margin: 0 20px;
+    position: relative;
+    z-index: 999;
+}
+
+/* Container para o botão hambúrguer */
+.mobile-menu-container {
+    display: none;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-container {
+        display: block;
+    }
+}
+
+/* --- MENU PRINCIPAL --- */
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    width: 100%;
+    max-width: none; /* Remove limitação de largura para se adaptar ao header */
+}
+
+.menu li {
+    position: relative;
+    text-align: center;
+    margin: 0 5px; /* Espaçamento entre itens */
+    border-radius: 4px;
+    overflow: visible; /* Alterado para permitir que o submenu apareça */
+    z-index: 1000;
+}
+
+.menu li:first-child {
+    margin-left: 0;
+}
+
+.menu li:last-child {
+    margin-right: 0;
+}
+
+/* --- LINKS PRINCIPAIS --- */
+.menu li a {
+    color: #f1f5f9; /* cinza claro */
+    text-decoration: none;
+    display: block;
+    padding: 8px 16px; /* Padding menor para caber no header */
+    font-weight: 500;
+    font-family: "Poppins", sans-serif; /* Usa a fonte do sistema */
+    font-size: 14px; /* Tamanho menor para header */
+    transition: background 0.3s ease, color 0.3s ease;
+    border-radius: 4px;
+    white-space: nowrap; /* Evita quebra de linha */
+}
+
+/* Hover nos links principais */
+.menu li a:hover {
+    background-color: #F97316; /* laranja destaque */
+    color: #fff;
+}
+
+/* --- SUBMENU --- */
+.submenu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f8fafc;
+    display: none;
+    min-width: 200px;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    z-index: 1001;
+    border: 1px solid #e2e8f0;
+}
+
+/* Ajuste para submenus que podem ficar fora da tela */
+.submenu.position-left {
+    left: 0;
+    transform: none;
+}
+
+.submenu.position-right {
+    right: 0;
+    left: auto;
+    transform: none;
+}
+
+/* Itens do submenu */
+.submenu li {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.submenu li:last-child {
+    border-bottom: none;
+}
+
+.submenu li a {
+    color: #1E3A8A;
+    font-weight: 400;
+    padding: 10px 15px;
+    text-align: left;
+    display: block;
+    transition: background 0.2s ease, color 0.2s ease;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.submenu li a:hover {
+    background-color: #2563eb;
+    color: #fff;
+}
+
+/* --- MOSTRAR SUBMENU AO PASSAR O MOUSE (DESKTOP) --- */
+@media (min-width: 769px) {
+    .menu li.has-submenu:hover > .submenu {
+        display: block;
+        animation: fadeIn 0.25s ease-in-out;
+    }
+}
+
+/* --- ANIMAÇÃO SUBMENU --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(-5px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* --- MENU HAMBÚRGUER PARA MOBILE --- */
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--color-header-text);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-toggle:active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .main-navigation {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--color-header-bg);
+        display: none;
+        z-index: 9999;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .main-navigation.active {
+        display: block;
+    }
+    
+    .menu {
+        flex-direction: column;
+        padding: 0;
+    }
+    
+    .menu li {
+        margin: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .menu li a {
+        padding: 15px 20px;
+        text-align: left;
+        border-radius: 0;
+        display: block;
+        color: #f1f5f9;
+    }
+    
+    .submenu {
+        position: static;
+        background-color: rgba(0, 0, 0, 0.3);
+        display: none;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .menu li.has-submenu.open .submenu {
+        display: block;
+    }
+    
+    .submenu li {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .submenu li a {
+        padding: 12px 40px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.9);
+        background: none;
+    }
+    
+    .submenu li a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+    
+    /* Remove hover em mobile */
+    .menu li.has-submenu:hover > .submenu {
+        display: none !important;
+    }
+    
+    /* Força estilos corretos para submenu mobile */
+    .main-navigation .submenu {
+        position: static !important;
+        transform: none !important;
+        left: auto !important;
+        top: auto !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        min-width: auto !important;
+        width: 100% !important;
+    }
+    
+    .main-navigation .submenu li a {
+        color: rgba(255, 255, 255, 0.9) !important;
+        background: none !important;
+        border-radius: 0 !important;
+    }
+    
+    .main-navigation .submenu li a:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #fff !important;
+    }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 480px) {
+    .menu li a {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+    
+    .submenu li a {
+        padding: 8px 30px;
+        font-size: 12px;
+    }
+}
+
+/* --- ESTILOS PARA QUANDO NÃO HÁ SUBMENU (opcional) --- */
+.menu li:not(.has-submenu) a {
+    position: relative;
+}
+
+.menu li:not(.has-submenu) a:hover::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 2px;
+    background-color: #F97316;
+    border-radius: 1px;
+}
+
+/* --- TEMA DARK PARA NAVEGAÇÃO --- */
+[data-theme='dark'] .menu li a {
+    color: #FFFFFF; /* Branco puro para texto no tema dark */
+}
+
+[data-theme='dark'] .menu li a:hover {
+    background-color: #F97316; /* Laranja no hover */
+    color: #fff;
+}
+
+[data-theme='dark'] .submenu {
+    background-color: #1E293B; /* Fundo escuro para submenu */
+    border: 1px solid #475569;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+[data-theme='dark'] .submenu li {
+    border-bottom: 1px solid #475569;
+}
+
+[data-theme='dark'] .submenu li a {
+    color: #FFFFFF; /* Texto branco puro no submenu */
+}
+
+[data-theme='dark'] .submenu li a:hover {
+    background-color: #F97316; /* Laranja no hover */
+    color: #fff;
+}
+
+/* Tema dark para mobile */
+@media (max-width: 768px) {
+    [data-theme='dark'] .main-navigation {
+        background-color: #1E293B;
+        border-top: 1px solid #4B5563;
+    }
+    
+    [data-theme='dark'] .menu li {
+        border-bottom: 1px solid #4B5563;
+    }
+    
+    [data-theme='dark'] .submenu {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+    
+    [data-theme='dark'] .submenu li {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    [data-theme='dark'] .submenu li a {
+        color: rgba(229, 231, 235, 0.8);
+    }
+    
+    [data-theme='dark'] .submenu li a:hover {
+        background-color: rgba(249, 115, 22, 0.2);
+        color: #E5E7EB;
+    }
+    
+    [data-theme='dark'] .mobile-menu-toggle {
+        color: #E5E7EB;
+    }
+    
+    [data-theme='dark'] .mobile-menu-toggle:hover {
+        background-color: rgba(229, 231, 235, 0.1);
+    }
+}

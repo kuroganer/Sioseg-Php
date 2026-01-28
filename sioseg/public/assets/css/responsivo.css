@@ -1,0 +1,335 @@
+/* ===== ESTILOS BASE MOBILE FIRST ===== */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+  background-color: #f4f4f9;
+  color: #333;
+  font-size: 14px;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* Ajustes para telas maiores */
+@media screen and (min-width: 769px) {
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: #5a2df0;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #ff69b4;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #5a2df0;
+  color: #fff;
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  gap: 15px;
+}
+
+.navbar a {
+  padding: 12px 18px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 15px;
+  background-color: #5a2df0;
+  color: #fff;
+  margin-top: 20px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* ===== MOBILE FIRST APPROACH ===== */
+
+/* Base styles - Mobile first (< 768px) */
+.header {
+  flex-direction: column;
+  padding: 10px;
+  text-align: center;
+}
+
+.logo {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.navbar {
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+}
+
+.navbar a {
+  padding: 12px 15px;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 14px;
+  min-height: 44px; /* Área de toque mínima */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer {
+  padding: 8px;
+  font-size: 12px;
+}
+
+/* Smartphones pequenos (< 480px) */
+@media screen and (max-width: 480px) {
+  .header {
+    padding: 8px;
+  }
+
+  .logo {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .navbar {
+    gap: 6px;
+  }
+
+  .navbar a {
+    padding: 10px 12px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+
+  .footer {
+    padding: 6px;
+    font-size: 11px;
+  }
+}
+
+/* Tablets (481px - 768px) */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .header {
+    padding: 12px;
+  }
+
+  .logo {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .navbar {
+    gap: 10px;
+  }
+
+  .navbar a {
+    padding: 12px 18px;
+    font-size: 15px;
+  }
+
+  .footer {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+/* Desktop (769px+) */
+@media screen and (min-width: 769px) {
+  .header {
+    flex-direction: row;
+    padding: 15px 30px;
+    text-align: left;
+  }
+
+  .logo {
+    font-size: 28px;
+    margin-bottom: 0;
+  }
+
+  .navbar {
+    flex-direction: row;
+    width: auto;
+    gap: 15px;
+  }
+
+  .navbar a {
+    padding: 12px 18px;
+    font-size: 15px;
+  }
+
+  .footer {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/* Desktop grande (1025px+) */
+@media screen and (min-width: 1025px) {
+  .header {
+    padding: 20px 40px;
+  }
+
+  .logo {
+    font-size: 32px;
+  }
+
+  .navbar a {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+
+  .footer {
+    padding: 15px;
+    font-size: 14px;
+  }
+}
+
+/* Orientação landscape em tablets */
+@media screen and (min-width: 481px) and (max-width: 1024px) and (orientation: landscape) {
+  .header {
+    flex-direction: row;
+    padding: 10px 20px;
+  }
+
+  .logo {
+    margin-bottom: 0;
+    margin-right: 20px;
+  }
+
+  .navbar {
+    flex-direction: row;
+    width: auto;
+    flex-wrap: wrap;
+  }
+}
+
+/* Melhorias para dispositivos touch */
+@media (hover: none) and (pointer: coarse) {
+  .navbar a {
+    min-height: 44px;
+    padding: 12px 20px;
+  }
+
+  .navbar a:active {
+    transform: scale(0.98);
+    background-color: rgba(249, 115, 22, 0.35);
+  }
+}
+
+/* --- TEMA DARK RESPONSIVO --- */
+[data-theme='dark'] body {
+  background-color: #0F172A;
+  color: #FFFFFF;
+}
+
+[data-theme='dark'] .header {
+  background-color: #0F172A;
+  color: #FFFFFF;
+}
+
+[data-theme='dark'] .logo {
+  color: #FFFFFF;
+}
+
+[data-theme='dark'] .navbar a {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-theme='dark'] .navbar a:hover {
+  background-color: rgba(249, 115, 22, 0.25);
+  color: #fff;
+  border-color: rgba(249, 115, 22, 0.5);
+}
+
+[data-theme='dark'] .navbar a:active {
+  background-color: rgba(249, 115, 22, 0.35);
+  transform: scale(0.98);
+}
+
+[data-theme='dark'] .footer {
+  background-color: #0F172A;
+  color: #FFFFFF;
+}
+
+/* Ajustes específicos do tema escuro para mobile */
+@media screen and (max-width: 768px) {
+  [data-theme='dark'] .navbar a {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  [data-theme='dark'] .navbar a:active {
+    background-color: rgba(249, 115, 22, 0.3);
+  }
+}
+
+/* Otimizações gerais para mobile */
+@media screen and (max-width: 768px) {
+  /* Previne zoom indesejado em inputs */
+  input, textarea, select {
+    font-size: 16px;
+  }
+
+  /* Melhora a legibilidade */
+  body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Remove destaque de toque padrão */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Otimiza imagens */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Melhora tabelas em mobile */
+  table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+  }
+
+  table tbody {
+    display: table;
+    width: 100%;
+  }
+}

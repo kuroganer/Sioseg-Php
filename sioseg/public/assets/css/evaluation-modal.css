@@ -1,0 +1,214 @@
+/* Estilos mínimos para o modal de avaliação */
+/* Modal centralizado e estilizado */
+/* Hidden by default; only visible when .show is present */
+#evaluation-modal {
+    display: none;
+}
+
+#evaluation-modal.show {
+    position: fixed;
+    z-index: 11000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(30, 58, 138, 0.45); /* overlay azul translúcido */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Conteúdo do modal */
+#evaluation-modal .modal-content {
+    background: #FFFFFF; /* fundo branco */
+    color: #1E3A8A; /* azul escuro */
+    padding: 22px 24px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 680px;
+    box-shadow: 0 10px 30px rgba(30, 58, 138, 0.35); /* sombra azulada */
+    border: 1px solid rgba(30, 58, 138, 0.12);
+    font-family: inherit;
+    position: relative;
+}
+
+/* Título do modal */
+#evaluation-modal h3 {
+    font-size: 1.5rem;
+    margin: 0 0 12px 0;   
+    color: #1E3A8A; /* azul escuro */
+    text-decoration: underline #F97316; /* laranja */
+}
+
+/* Texto dentro do corpo do modal */
+#evaluation-modal #evaluation-body p {
+    margin: 8px 0;
+    color: #1E3A8A;
+}
+
+/* Força cores nos elementos internos */
+#evaluation-modal strong,
+#evaluation-modal b,
+#evaluation-modal em,
+#evaluation-modal span,
+#evaluation-modal #evaluation-comment {
+    color: #1E3A8A;
+}
+
+/* Comentário / conteúdo interno */
+#evaluation-modal #evaluation-comment {
+    background: #F8F9FA;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #F97316; /* laranja */
+    border-radius: 6px;
+    padding: 12px 15px;
+    margin-top: 12px;
+    min-height: 80px;
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    font-family: inherit;
+    font-size: 14px;
+    border-left: 3px solid #F97316;
+}
+
+/* Botão de fechar */
+#evaluation-modal .modal-close {
+    position: absolute;
+    right: 18px;
+    top: 14px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50%;
+    background: #F97316; /* laranja */
+    color: #FFFFFF; /* branco */
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
+    font-size: 20px;
+}
+
+/* Botões do modal */
+#evaluation-modal .modal-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* Botões primários */
+#evaluation-modal .modal-actions button.primary-button {
+    background-color: #F97316; /* laranja */
+    color: #FFFFFF; /* branco */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+#evaluation-modal .modal-actions button.primary-button:hover {
+    background-color: #DC6803; /* laranja mais escuro */
+}
+
+/* Botões secundários */
+#evaluation-modal .modal-actions button.secondary-button {
+    background-color: transparent;
+    color: #1E3A8A; /* azul escuro */
+    border: 1px solid #1E3A8A;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+#evaluation-modal .modal-actions button.secondary-button:hover {
+    background-color: rgba(30, 58, 138, 0.1); /* hover azul suave */
+    color: #1E3A8A;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+    #evaluation-modal .modal-content {
+        padding: 16px;
+        border-radius: 10px;
+        max-width: 92%;
+    }
+
+    #evaluation-modal .modal-close {
+        right: 12px;
+        top: 10px;
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        font-size: 18px;
+    }
+}
+/* --- MODAL DE AVALIAÇÃO - TEMA DARK --- */
+[data-theme='dark'] #evaluation-modal.modal {
+    background-color: rgba(30, 58, 138, 0.45); /* overlay azul translúcido */
+}
+
+[data-theme='dark'] #evaluation-modal .modal-content {
+    background: #1F2937; /* fundo escuro */
+    color: #F1F5F9; /* texto claro */
+    box-shadow: 0 10px 30px rgba(30, 58, 138, 0.35);
+    border: 1px solid rgba(75, 85, 99, 0.3); /* borda mais visível no dark */
+}
+
+[data-theme='dark'] #evaluation-modal h3,
+[data-theme='dark'] #evaluation-modal #evaluation-body p {
+    color: #F1F5F9; /* texto principal claro */
+}
+
+[data-theme='dark'] #evaluation-modal strong,
+[data-theme='dark'] #evaluation-modal b,
+[data-theme='dark'] #evaluation-modal em,
+[data-theme='dark'] #evaluation-modal span,
+[data-theme='dark'] #evaluation-modal #evaluation-comment {
+    color: #93C5FD; /* azul claro para destaque */
+}
+
+[data-theme='dark'] #evaluation-modal #evaluation-comment {
+    border: 1px solid #F97316; /* laranja */
+    background: #374151;
+    color: #F1F5F9;
+    border-left: 3px solid #F97316;
+}
+
+[data-theme='dark'] #evaluation-modal .modal-close {
+    background: #F97316; /* laranja */
+    color: #FFFFFF; /* branco */
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.5);
+}
+
+[data-theme='dark'] #evaluation-modal .modal-actions button.primary-button {
+    background-color: #F97316; /* laranja */
+    color: #FFFFFF; /* branco */
+}
+
+[data-theme='dark'] #evaluation-modal .modal-actions button.primary-button:hover {
+    background-color: #EA580C; /* laranja mais forte */
+}
+
+[data-theme='dark'] #evaluation-modal .modal-actions button.secondary-button {
+    background-color: transparent;
+    color: #93C5FD; /* azul claro */
+    border: 1px solid #93C5FD;
+}
+
+[data-theme='dark'] #evaluation-modal .modal-actions button.secondary-button:hover {
+    background-color: rgba(147, 197, 253, 0.1); /* hover azul suave */
+    color: #93C5FD;
+}

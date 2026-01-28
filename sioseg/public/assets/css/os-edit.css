@@ -1,0 +1,128 @@
+/* Estilos específicos para edição de OS */
+
+.materiais-list {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.materiais-list h4 {
+    margin: 0 0 10px 0;
+    color: #495057;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.material-item-existing {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+}
+
+.material-item-existing .form-row {
+    margin-bottom: 0;
+}
+
+.material-item-existing input[readonly] {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.btn-remove-material-existing {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+
+.btn-remove-material-existing:hover {
+    background-color: #c82333;
+}
+
+.btn-remove-material-existing:disabled {
+    background-color: #e0a8a8;
+    cursor: not-allowed;
+}
+
+.btn-add-material, .btn-remove-material {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+
+.btn-add-material:hover {
+    background-color: #218838;
+}
+
+.btn-remove-material {
+    background-color: #dc3545;
+}
+
+.btn-remove-material:hover {
+    background-color: #c82333;
+}
+
+.quantidade-material-existente[disabled] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+#os-status-message {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    display: none;
+}
+
+#os-status-message i {
+    margin-right: 5px;
+}
+
+/* --- TEMA ESCURO --- */
+[data-theme='dark'] .materiais-list {
+    background-color: #374151;
+    border-color: #4B5563;
+}
+
+[data-theme='dark'] .materiais-list h4 {
+    color: #E5E7EB;
+}
+
+[data-theme='dark'] .material-item-existing {
+    background-color: #1F2937;
+    border-color: #4B5563;
+    color: #E5E7EB;
+}
+
+[data-theme='dark'] .material-item-existing input[readonly] {
+    background-color: #374151;
+    color: #E5E7EB;
+}
+
+[data-theme='dark'] .quantidade-material-existente[disabled] {
+    background-color: #374151;
+    color: #9CA3AF;
+}
+
+[data-theme='dark'] #os-status-message {
+    background-color: #374151;
+    color: #E5E7EB;
+    border-color: #4B5563;
+}

@@ -1,0 +1,157 @@
+/* Estilos específicos para o layout do painel do técnico */
+
+/* Variáveis CSS para cores e temas */
+:root {
+    --primary-color: #1E3A8A;
+    --primary-light: #3B82F6;
+    --background-secondary: #F8FAFC;
+    --text-dark: #374151;
+    --border-color: #D1D5DB;
+}
+
+[data-theme='dark'] {
+    --primary-color: #3B82F6;
+    --primary-light: #60A5FA;
+    --background-secondary: #1E293B;
+    --text-dark: #E5E7EB;
+    --border-color: #4B5563;
+}
+
+/* Estilos para seção de materiais */
+.materiais-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--background-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.lista-materiais {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.material-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.material-item:last-child {
+    border-bottom: none;
+}
+
+.material-nome {
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.material-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.material-actions .qtd-input {
+    width: 65px;
+    text-align: center;
+}
+
+.btn-salvar-qtd {
+    padding: 6px 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+
+.btn-salvar-qtd:hover {
+    background-color: var(--primary-light);
+}
+
+.qtd-input {
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: white;
+    color: var(--text-dark);
+}
+
+/* Estilos para detalhes de endereço */
+.endereco-detalhes {
+    background-color: var(--background-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    margin: 10px 0;
+}
+
+.endereco-detalhes p {
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+.endereco-detalhes h4,
+.cliente-info h4,
+.servico-info h4 {
+    margin: 0 0 10px 0;
+    color: var(--primary-color);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.endereco-linha {
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.cliente-info,
+.servico-info {
+    background-color: var(--background-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border-left: 4px solid var(--primary-color);
+}
+
+.contatos {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.contatos span {
+    font-size: 14px;
+}
+
+/* Estilos para cabeçalho mobile */
+.mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.mobile-header h2 {
+    margin: 0;
+}
+
+.btn-voltar {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-voltar:hover {
+    background-color: var(--primary-light);
+}

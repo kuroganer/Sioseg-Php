@@ -1,0 +1,333 @@
+/* Reset Global - PRIMEIRO A SER CARREGADO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Essencial para um bom layout */
+}
+
+/* Estilos para o BODY (globais para TODO O SITE, exceto login) */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    background-color: #f4f4f4; /* Cor de fundo padrão */
+    margin: 0;
+    padding: 0;
+}
+
+/* --- ESTILOS DA NOVA BARRA SUPERIOR (top-bar) --- */
+.top-bar { /* Classe renomeada */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #20a136; /* Fundo escuro para a barra */
+    color: #060303;
+    padding: 10px 20px;
+    height: 60px; /* Altura da barra superior (ajuste conforme necessário) */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.site-logo-link {
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.site-logo-text { /* Estilos para o texto/mini-logo na barra superior */
+    font-size: 24px; /* Tamanho da fonte para "SIOSeG" */
+    font-weight: bold;
+    color: #fff; /* Cor do texto "SIOSeG" */
+    margin-left: 20px; /* Espaçamento da borda esquerda */
+    transition: all 0.3s ease;
+}
+
+.site-logo-link:hover .site-logo-text {
+    color: #F97316;
+    transform: scale(1.05);
+}
+
+/* Estilos para as informações do usuário logado */
+.top-bar .user-info { /* Ajuste o seletor para .top-bar */
+    color: white;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.top-bar .user-info a { /* Ajuste o seletor para .top-bar */
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+.top-bar .user-info a:hover { /* Ajuste o seletor para .top-bar */
+    text-decoration: underline;
+}
+
+/* --- ESTILOS DA IMAGEM DE BANNER PRINCIPAL (topo.jpg) --- */
+/* .main-banner-image {
+    background-image: url('../img/topo.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 250px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+} */
+.main-banner-image {
+    background: linear-gradient(135deg, #20a136 0%, #F97316 100%);
+    width: 100%;
+    height: 250px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* --- ESTILOS DA BARRA DE NAVEGAÇÃO (<section> <nav>) --- */
+section {
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+main {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* --- ESTILOS DO RODAPÉ --- */
+.footer {
+    background-color: #20a136;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    height: 60px; /* Rodapé mais compacto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- TEMA DARK PARA ESTILOS GLOBAIS --- */
+[data-theme='dark'] body {
+    background-color: #0F172A; /* Fundo muito escuro */
+    color: #FFFFFF; /* Texto branco puro */
+}
+
+[data-theme='dark'] .top-bar {
+    background-color: #0F172A; /* Header muito escuro */
+    color: #FFFFFF;
+}
+
+[data-theme='dark'] .site-logo-text {
+    color: #F9FAFB; /* Logo claro */
+}
+
+[data-theme='dark'] .site-logo-link:hover .site-logo-text {
+    color: #F97316;
+    transform: scale(1.05);
+}
+
+[data-theme='dark'] .user-info {
+    color: #FFFFFF; /* Texto do usuário branco puro */
+}
+
+[data-theme='dark'] .user-info a {
+    color: #FFFFFF; /* Links brancos puros */
+}
+
+[data-theme='dark'] .user-info a:hover {
+    color: #F97316; /* Hover laranja */
+}
+
+[data-theme='dark'] section {
+    background-color: #374151; /* Seção escura */
+}
+
+[data-theme='dark'] main {
+    background-color: #0F172A; /* Main muito escuro */
+}
+
+[data-theme='dark'] .content {
+    background-color: #1E293B; /* Conteúdo escuro */
+    color: #FFFFFF; /* Texto branco puro */
+    border: 1px solid #475569;
+}
+
+[data-theme='dark'] .footer {
+    background-color: #0F172A; /* Footer muito escuro */
+    color: #FFFFFF; /* Texto branco puro */
+}
+a{
+    text-decoration: none;
+}
+
+/* --- ESTILOS PARA FILTROS --- */
+.filter-container {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #dee2e6;
+}
+
+.filter-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-label {
+    font-weight: bold;
+    color: #495057;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background: white;
+    min-width: 140px;
+}
+
+/* --- TEMA ESCURO PARA FILTROS --- */
+[data-theme='dark'] .filter-container {
+    background: #374151;
+    border-color: #4B5563;
+}
+
+[data-theme='dark'] .filter-label {
+    color: #E5E7EB;
+}
+
+[data-theme='dark'] .filter-select {
+    background: #1F2937;
+    border-color: #4B5563;
+    color: #E5E7EB;
+}
+
+[data-theme='dark'] .filter-select option {
+    background: #1F2937;
+    color: #E5E7EB;
+}
+
+/* --- TEMA ESCURO PARA MODAL OS PENDENTES --- */
+[data-theme='dark'] #modalOsPendentes > div {
+    background: #374151 !important;
+    color: #E5E7EB !important;
+}
+
+[data-theme='dark'] #modalOsPendentes h3 {
+    color: #F9FAFB !important;
+}
+
+[data-theme='dark'] #modalOsPendentes h4 {
+    color: #F9FAFB !important;
+}
+
+[data-theme='dark'] #modalOsPendentes .service-card {
+    background: #1F2937 !important;
+    border-color: #4B5563 !important;
+}
+
+[data-theme='dark'] #modalOsPendentes table {
+    color: #E5E7EB !important;
+}
+
+[data-theme='dark'] #modalOsPendentes td {
+    color: #E5E7EB !important;
+    border-color: #4B5563 !important;
+}
+
+[data-theme='dark'] #modalOsPendentes a {
+    color: #60A5FA !important;
+    border-color: #60A5FA !important;
+}
+
+[data-theme='dark'] #modalOsPendentes a:hover {
+    background: #60A5FA !important;
+    color: #1F2937 !important;
+}
+
+[data-theme='dark'] #modalOsPendentes button {
+    color: #9CA3AF !important;
+}
+
+[data-theme='dark'] #modalOsPendentes button:hover {
+    color: #F9FAFB !important;
+    background: rgba(156, 163, 175, 0.1) !important;
+}
+
+[data-theme='dark'] #listaOsPendentes {
+    color: #E5E7EB !important;
+}
+
+[data-theme='dark'] #listaOsPendentes > div {
+    background: #1F2937 !important;
+    border-color: #4B5563 !important;
+    color: #E5E7EB !important;
+}
+
+[data-theme='dark'] #listaOsPendentes p {
+    color: #E5E7EB !important;
+}
+
+/* --- TEMA ESCURO PARA SEÇÃO DE MATERIAIS --- */
+[data-theme='dark'] .materials-section {
+    background: #374151 !important;
+    border-color: #4B5563 !important;
+    color: #E5E7EB !important;
+}
+
+[data-theme='dark'] .materials-section h3,
+[data-theme='dark'] .materials-section h4 {
+    color: #F9FAFB !important;
+}
+
+[data-theme='dark'] .material-item {
+    background: #1F2937 !important;
+    border-color: #4B5563 !important;
+    color: #E5E7EB !important;
+}
+
+[data-theme='dark'] .material-info {
+    color: #E5E7EB !important;
+}
+
+[data-theme='dark'] .material-details {
+    background: #1F2937 !important;
+    color: #E5E7EB !important;
+}
+
+[data-theme='dark'] .os-details-table {
+    background: #374151 !important;
+    color: #E5E7EB !important;
+}
+
+[data-theme='dark'] .os-details-table th,
+[data-theme='dark'] .os-details-table td {
+    background: #1F2937 !important;
+    color: #E5E7EB !important;
+    border-color: #4B5563 !important;
+}
+
+[data-theme='dark'] .os-details-table .section-header {
+    background: #374151 !important;
+    color: #F9FAFB !important;
+}
+
+/* --- TEMA ESCURO PARA USUARIO RESPONSAVEL DISPLAY --- */
+[data-theme='dark'] #usuario_responsavel_display {
+    background: #374151 !important;
+    color: #E5E7EB !important;
+    border-color: #4B5563 !important;
+}
+

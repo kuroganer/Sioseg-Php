@@ -1,0 +1,143 @@
+.autocomplete-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.autocomplete-container .input-icon {
+    position: absolute;
+    left: 15px;
+    z-index: 1;
+    color: #6c757d;
+    pointer-events: none;
+}
+
+.autocomplete-container input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.autocomplete-container input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #e1e5e9;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    color: #333;
+}
+
+.autocomplete-item:hover {
+    background-color: #f8f9fa;
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+/* Variáveis CSS para temas */
+:root {
+    --border-color: #e1e5e9;
+    --input-bg: #fff;
+    --text-color: #333;
+    --dropdown-bg: white;
+    --border-light: #f0f0f0;
+    --hover-bg: #f5f5f5;
+    --text-muted: #666;
+}
+
+[data-theme="dark"] {
+    --border-color: #4a5568;
+    --input-bg: #2d3748;
+    --text-color: #e2e8f0;
+    --dropdown-bg: #2d3748;
+    --border-light: #4a5568;
+    --hover-bg: #4a5568;
+    --text-muted: #adb5bd;
+}
+
+/* Tema escuro */
+[data-theme="dark"] .autocomplete-container .input-icon {
+    color: #adb5bd;
+}
+
+[data-theme="dark"] .autocomplete-container input {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .autocomplete-container input:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+[data-theme="dark"] .autocomplete-dropdown {
+    background: #2d3748;
+    border-color: #4a5568;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .autocomplete-item {
+    color: #e2e8f0;
+    border-bottom-color: #4a5568;
+}
+
+[data-theme="dark"] .autocomplete-item:hover {
+    background-color: #4a5568;
+}
+
+/* Materiais adicionados - tema escuro */
+[data-theme="dark"] .materiais-list {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .materiais-list h4 {
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .material-item-summary {
+    background-color: #4a5568;
+    border-color: #718096;
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] #materiais-adicionados {
+    background-color: #2d3748;
+    border: 1px solid #4a5568;
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] #materiais-list-content {
+    background-color: #2d3748;
+    color: #e2e8f0;
+}

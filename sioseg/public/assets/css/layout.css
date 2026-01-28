@@ -1,0 +1,424 @@
+/* --- CONFIGURAÇÃO PARA FOOTER FIXO NA BASE --- */
+html {
+    margin: 0;
+    padding: 0;
+}
+
+/* Use flex layout on body so footer participates in document flow (sticky footer when content short)
+   This prevents the footer from overlaying content. */
+body {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    /* Espaço para footer absoluto: usa variável atualizável --footer-height */
+    padding-bottom: var(--footer-height, 60px);
+    overflow-x: hidden;
+}
+
+main {
+    min-height: calc(100vh - 120px); /* Header + Footer */
+    padding-bottom: 20px;
+}
+
+/* --- VARIÁVEIS DE CORES --- */
+:root {
+    --color-header-bg: #1E3A8A;       /* Azul escuro */
+    --color-header-text: #FFFFFF;     /* Branco */
+    --color-background-card: #F3F4F6; /* Cinza claro para conteúdo */
+    --color-accent: #F97316;          /* Laranja para links e botões */
+    --color-section-bg: #E0E7FF;      /* Azul claro suave para seções */
+    /* Cores textuais padrão (centralizadas) */
+    --color-text-primary: #1F2937;    /* Texto principal (escuro) */
+    --color-text-secondary: #6B7280;  /* Texto secundário, labels e meta */
+    --color-link-default: var(--color-header-bg); /* Links usam a cor do header por padrão */
+    --color-border: #D1D5DB;          /* Borda e linhas sutis */
+    --color-accent-strong: #EA580C;   /* Variante mais escura do accent para hover/estado ativo */
+}
+
+/* --- TEMA DARK --- */
+[data-theme='dark'] {
+    --color-header-bg: #0F172A;       /* Azul muito escuro para melhor contraste */
+    --color-header-text: #FFFFFF;     /* Branco puro para máximo contraste */
+    --color-background-card: #1E293B; /* Cinza escuro para conteúdo */
+    --color-accent: #FB923C;          /* Laranja mais claro para melhor visibilidade */
+    --color-section-bg: #334155;      /* Cinza médio para seções */
+    /* Cores textuais para tema escuro */
+    --color-text-primary: #FFFFFF;    /* Texto principal branco puro */
+    --color-text-secondary: #CBD5E1;  /* Texto secundário mais claro */
+    --color-link-default: #60A5FA;    /* Links em azul mais claro */
+    --color-border: #475569;          /* Borda mais clara */
+    --color-accent-strong: #F97316;   /* Accent forte mais visível */
+}
+
+/* --- ESTILOS DA BARRA SUPERIOR (top-bar) --- */
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-header-bg);
+    color: var(--color-header-text);
+    padding: 10px 20px;
+    height: 60px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    width: 100%;
+    position: relative;
+    z-index: 1000;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .top-bar {
+        padding: 8px 15px;
+        height: 50px;
+        flex-wrap: wrap;
+    }
+    
+    .site-logo-text {
+        font-size: 20px;
+        margin-left: 10px;
+    }
+    
+    .user-controls {
+        gap: 10px;
+    }
+    
+    .user-text {
+        font-size: 12px;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-bar {
+        padding: 5px 10px;
+        height: 45px;
+    }
+    
+    .site-logo-text {
+        font-size: 18px;
+        margin-left: 5px;
+    }
+    
+    .user-controls {
+        gap: 8px;
+    }
+    
+    .user-text {
+        display: none;
+    }
+}
+
+.site-logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-header-text);
+    margin-left: 20px;
+}
+
+.top-bar .user-info {
+    color: var(--color-header-text);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.user-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-text {
+    color: var(--color-header-text);
+}
+
+@media (max-width: 767px) {
+    .user-text {
+        display: none;
+    }
+}
+
+.top-bar .user-info a {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.top-bar .user-info a:hover {
+    text-decoration: underline;
+}
+
+/* --- ESTILOS DA IMAGEM DE BANNER PRINCIPAL --- */
+/* .main-banner-image {
+    background-image: url('../img/topo.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 250px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+} */
+.main-banner-image {
+    background: linear-gradient(135deg, var(--color-header-bg) 0%, var(--color-accent) 100%);
+    width: 100%;
+    height: 250px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* --- ESTILOS DA BARRA DE NAVEGAÇÃO --- */
+section {
+    background-color: var(--color-section-bg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* --- ESTILOS PARA CAIXAS DE CONTEÚDO --- */
+.content {
+    background-color: var(--color-background-card);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Responsividade para conteúdo */
+@media (max-width: 768px) {
+    .content {
+        padding: 15px;
+        margin: 10px;
+        border-radius: 6px;
+    }
+    
+    main {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        padding: 10px;
+        margin: 5px;
+        border-radius: 4px;
+    }
+    
+    main {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+}
+
+/* --- ESTILOS DO RODAPÉ --- */
+.footer {
+    background: linear-gradient(135deg, var(--color-header-bg) 0%, #1E40AF 100%);
+    color: var(--color-header-text);
+    text-align: center;
+    padding: 12px 20px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.footer-separator {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: bold;
+}
+
+.footer-link {
+    color: #60A5FA;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #93C5FD;
+    background: rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+}
+
+/* Responsividade para footer */
+@media (max-width: 768px) {
+    .footer {
+        height: 50px;
+        padding: 10px 15px;
+    }
+    
+    .footer-content {
+        gap: 8px;
+    }
+    
+    .footer-text {
+        font-size: 12px;
+    }
+    
+    .footer-link {
+        font-size: 12px;
+        padding: 3px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        height: 45px;
+        padding: 8px 10px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .footer-text {
+        font-size: 11px;
+    }
+    
+    .footer-link {
+        font-size: 11px;
+    }
+    
+    .footer-separator {
+        display: none;
+    }
+}
+
+/* --- DETALHES ADICIONAIS --- */
+a.button, button {
+    background-color: var(--color-accent);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+a.button:hover, button:hover {
+    background-color: var(--color-accent-strong);
+}
+
+/* Responsividade para botões */
+@media (max-width: 768px) {
+    a.button, button {
+        padding: 12px 16px;
+        font-size: 14px;
+        min-height: 44px; /* Área de toque mínima */
+        border-radius: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    a.button, button {
+        padding: 10px 14px;
+        font-size: 13px;
+        min-height: 40px;
+        border-radius: 4px;
+    }
+}
+
+/* Melhorias gerais para dispositivos móveis */
+@media (hover: none) and (pointer: coarse) {
+    /* Estilos para dispositivos touch */
+    a.button, button {
+        min-height: 44px;
+        padding: 12px 20px;
+    }
+    
+    a.button:active, button:active {
+        transform: scale(0.98);
+        background-color: var(--color-accent-strong);
+    }
+}
+
+/* Estilos para apresentações/slides */
+@media screen and (min-width: 1200px) {
+    [data-theme='dark'] {
+        /* Contraste extra alto para apresentações */
+        --color-text-primary: #FFFFFF;
+        --color-text-secondary: #E2E8F0;
+        --color-background-card: #1E293B;
+        --color-section-bg: #334155;
+        --color-border: #64748B;
+    }
+    
+    [data-theme='dark'] h1,
+    [data-theme='dark'] h2,
+    [data-theme='dark'] h3,
+    [data-theme='dark'] h4 {
+        color: #FFFFFF;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+    
+    [data-theme='dark'] .content {
+        border: 2px solid #475569;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+}
+
+/* Viewport meta tag enforcement via CSS */
+@media screen and (max-width: 768px) {
+    html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+    
+    body {
+        -webkit-font-smoothing: antialiased;
+        font-smoothing: antialiased;
+    }
+}
+
+/* Otimizações para performance em mobile */
+@media (max-width: 768px) {
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    table {
+        width: 100%;
+        overflow-x: auto;
+        display: block;
+        white-space: nowrap;
+    }
+    
+    table tbody {
+        display: table;
+        width: 100%;
+    }
+}

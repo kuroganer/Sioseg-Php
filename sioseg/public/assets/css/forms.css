@@ -1,0 +1,412 @@
+/* public/assets/css/forms.css */
+
+/* Variáveis de Tema */
+:root {
+    --primary-color: #1E3A8A;
+    --primary-dark: #2563EB;
+    --accent-color: #3B82F6;
+    --bg-color: #F3F4F6;
+    --card-bg-color: #ffffff;
+    --sidebar-bg-color: #1E3A8A;
+    --text-color: #374151;
+    --label-color: #4B5563;
+    --border-color: #D1D5DB;
+    --input-bg: #F9FAFB;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --text-light: #FFFFFF;
+    --text-sidebar: #F9FAFB;
+}
+
+[data-theme='dark'] {
+    --primary-color: #3B82F6;
+    --primary-dark: #60A5FA;
+    --accent-color: #60A5FA;
+    --bg-color: #111827;
+    --card-bg-color: #1F2937;
+    --sidebar-bg-color: #000;
+    --text-color: #E5E7EB;
+    --label-color: #9CA3AF;
+    --border-color: #4B5563;
+    --input-bg: #374151;
+    --shadow-color: rgba(0, 0, 0, 0.25);
+}
+
+/* Container principal */
+.form-container {
+    background-color: var(--card-bg-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px var(--shadow-color);
+    width: 100%;
+    max-width: 1400px;
+    min-height: 600px;
+    display: flex;
+    overflow: hidden;
+    transition: background-color 0.3s;
+    margin: 20px auto;
+}
+
+/* Sidebar */
+.form-sidebar {
+    background: var(--sidebar-bg-color);
+    padding: 30px 25px;
+    flex: 0 0 280px;
+    color: var(--text-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.sidebar-header h2, .sidebar-title {
+    font-weight: 700;
+    font-size: 1.8em;
+    margin: 0;
+    color: var(--text-light);
+    line-height: 1.2;
+}
+
+.sidebar-footer {
+    font-size: 0.8em;
+    color: var(--text-sidebar);
+}
+
+/* Main form */
+.form-main {
+    padding: 30px 40px;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 600px;
+}
+
+/* Progress bar */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.progress-bar-inner {
+    height: 100%;
+    width: 0;
+    background-color: var(--accent-color);
+    border-radius: 4px;
+    transition: width 0.5s ease-in-out;
+}
+
+/* Section titles */
+.form-section-title {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+/* Form sections */
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section:last-of-type {
+    margin-bottom: 20px;
+}
+
+
+
+/* Layout em colunas */
+.form-row {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+/* Form group com largura específica */
+.form-group.flex-2 {
+    flex: 2;
+    min-width: 300px;
+}
+
+/* Inputs com ícone */
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.input-group .input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--label-color);
+    pointer-events: none;
+    font-size: 1em;
+    width: 25px;
+    text-align: center;
+}
+
+/* Labels */
+.form-group label {
+    font-weight: 600;
+    color: var(--label-color);
+    margin-bottom: 8px;
+    font-size: 0.95em;
+    display: block;
+}
+
+/* Inputs/Select/Textarea dentro de input-group */
+.input-group > input,
+.input-group > select,
+.input-group > textarea {
+    padding-left: 45px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    height: 38px;
+}
+
+/* Inputs/Select/Textarea sem ícone */
+.form-group > input:not(.input-group > input),
+.form-group > select:not(.input-group > select),
+.form-group > textarea:not(.input-group > textarea) {
+    padding-left: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    height: 38px;
+}
+
+/* Focus */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Botões */
+button,
+button[type="submit"] {
+    width: 100%;
+    padding: 12px 14px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover,
+button[type="submit"]:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Responsivo */
+@media (max-width: 1200px) {
+    .form-container {
+        max-width: 95%;
+        margin: 20px auto;
+    }
+
+    .form-sidebar {
+        flex: 0 0 250px;
+        padding: 30px;
+    }
+
+    .form-main {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 992px) {
+    .form-sidebar {
+        flex: 0 0 200px;
+        padding: 20px;
+    }
+
+    .form-main {
+        padding: 20px;
+    }
+
+    .sidebar-header h2, .sidebar-title {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-sidebar {
+        display: none;
+    }
+
+    .form-container {
+        flex-direction: column;
+        max-width: 100%;
+        margin: 10px;
+        border-radius: 8px;
+    }
+
+    .form-main {
+        padding: 20px 15px;
+        max-height: none;
+    }
+
+    .form-section-title {
+        font-size: 1.1em;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-group {
+        min-width: auto;
+    }
+
+    button,
+    button[type="submit"] {
+        padding: 14px 16px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        margin: 5px;
+        border-radius: 6px;
+    }
+
+    .form-main {
+        padding: 15px 10px;
+    }
+
+    .form-section-title {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+
+    .form-row {
+        gap: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    button,
+    button[type="submit"] {
+        width: 100%;
+        padding: 16px 18px;
+        font-size: 16px;
+    }
+}
+
+/* Mensagens e feedback */
+.error-message { color: red; margin-bottom: 10px; }
+.success-message { color: green; margin-bottom: 10px; }
+.password-feedback { font-size: 0.8em; margin-top: 5px; }
+.cep-loading { display: none; font-size: 0.8em; color: var(--primary-color); }
+
+/* Headings */
+h2 { text-align: center; margin-bottom: 20px; color: var(--primary-color); font-weight: bold; }
+
+/* Estilos para lista de materiais */
+.materiais-list {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.materiais-list h4 {
+    margin: 0 0 10px 0;
+    color: #495057;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.material-item-summary {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background-color: white;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.material-item-summary span {
+    flex: 1;
+}
+
+/* Tema escuro para materiais */
+[data-theme='dark'] .materiais-list {
+    background-color: var(--input-bg) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme='dark'] .materiais-list h4 {
+    color: var(--text-color) !important;
+}
+
+[data-theme='dark'] .material-item-summary {
+    background-color: var(--card-bg-color) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.btn-add-material, .btn-remove-material {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+
+.btn-add-material:hover {
+    background-color: #218838;
+}
+
+.btn-remove-material {
+    background-color: #dc3545;
+}
+
+.btn-remove-material:hover {
+    background-color: #c82333;
+}

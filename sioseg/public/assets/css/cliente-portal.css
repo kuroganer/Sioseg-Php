@@ -1,0 +1,655 @@
+/* Estilos específicos para o portal do cliente */
+
+/* Variáveis CSS para tema claro/escuro */
+:root {
+    --primary-color: #1E3A8A;
+    --primary-light: #3B82F6;
+    --accent-color: #F59E0B;
+    --background-light: #F3F4F6;
+    --background-dark: #121212;
+    --container-bg: #fff;
+    --container-dark-bg: #1e1e1e;
+    --text-dark: #343a40;
+    --text-light: #ecf0f1;
+    --text-muted: #6B7280;
+    --border-color: #dee2e6;
+    --success-color: #2ecc71;
+    --success-bg: rgba(46, 204, 113, 0.1);
+    --warning-color: #f39c12;
+    --warning-bg: rgba(243, 156, 18, 0.1);
+}
+
+/* Variável padrão para segurança */
+:root {
+    --footer-height: 80px;
+}
+
+/* Garante que o navegador deixe espaço ao rolar para elementos */
+html {
+    scroll-padding-bottom: var(--footer-height);
+}
+
+/* Aplica margem de rolagem específica para formulários/avaliações */
+.avaliacao-form,
+.avaliacao-form * {
+    scroll-margin-bottom: calc(var(--footer-height) + 16px);
+}
+
+/* Portal container garante padding-bottom via JS, mas manter fallback */
+.portal-container {
+    padding-bottom: var(--footer-height);
+    position: relative;
+    z-index: 0;
+}
+
+/* Se o footer for fixed, assegure que seu z-index não cubra inputs interativos */
+footer, .footer {
+    z-index: 1;
+}
+
+/* Elementos modais permanecem acima do footer */
+.modal, .modal-content {
+    z-index: 2000;
+}
+
+[data-theme='dark'] {
+    --background-light: #0F172A;
+    --container-bg: #1E293B;
+    --text-dark: #FFFFFF;
+    --text-muted: #CBD5E1;
+    --border-color: #475569;
+    --primary-color: #3B82F6;
+    --primary-light: #60A5FA;
+    --accent-color: #FB923C;
+    --success-bg: rgba(46, 204, 113, 0.2);
+    --warning-bg: rgba(243, 156, 18, 0.2);
+}
+
+.portal-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 80px; /* Espaço para footer fixo */
+    box-sizing: border-box;
+}
+
+.page-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.tabs {
+    display: flex;
+    background: var(--container-bg);
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.tab-button {
+    flex: 1;
+    padding: 15px 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-muted);
+    border-radius: 8px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tab-button.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.tab-content.active { 
+    display: block; 
+}
+
+#historico {
+    padding-bottom: 100px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.service-card {
+    background: var(--container-bg);
+    border-left: 5px solid var(--primary-color);
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    page-break-inside: avoid;
+    break-inside: avoid;
+    display: block;
+    overflow: visible;
+}
+
+.service-card h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.service-card p {
+    margin: 8px 0;
+    line-height: 1.6;
+    color: var(--text-dark);
+}
+
+.status {
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.9em;
+}
+
+.status-aberta { 
+    color: var(--primary-color); 
+    background: rgba(30, 58, 138, 0.1); 
+}
+.status-em-andamento { 
+    color: var(--warning-color); 
+    background: var(--warning-bg); 
+}
+.status-encerrada { 
+    color: var(--success-color); 
+    background: var(--success-bg); 
+}
+
+.progresso-bar {
+    background-color: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 12px;
+    margin-top: 15px;
+}
+
+.progresso {
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+    height: 100%;
+    transition: width 0.4s ease;
+}
+
+.confirm-button {
+    background: var(--success-color);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 15px;
+    transition: opacity 0.3s;
+}
+
+.confirm-button:hover { 
+    opacity: 0.8; 
+}
+
+.avaliacao-form {
+    margin-top: 15px;
+    padding: 20px;
+    background: var(--background-light);
+    border-radius: 8px;
+}
+
+.estrelas {
+    font-size: 22px;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.estrelas span {
+    transition: color 0.2s;
+    margin-right: 5px;
+}
+
+.estrelas span.preenchida {
+    color: var(--accent-color);
+}
+
+.avaliacao-form textarea {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    resize: vertical;
+    min-height: 100px;
+    max-height: 300px;
+    background: var(--container-bg);
+    color: var(--text-dark);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.avaliacao-form button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+.avaliacao-form button:hover { 
+    opacity: 0.8; 
+}
+
+.avaliacao-feita {
+    margin-top: 15px;
+    padding-top: 15px;
+}
+
+.avaliacao-feita p {
+    margin: 10px 0;
+    color: var(--text-muted);
+}
+
+.avaliacao-feita .comentario-texto {
+    background: var(--background-light);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-color);
+    font-style: italic;
+    margin-top: 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Sobrescreve estilos globais que podem conflitar */
+body > main {
+    padding: 20px 0;
+    background-color: var(--background-light);
+}
+
+/* ===== RESPONSIVIDADE MOBILE FIRST ===== */
+
+/* Mobile First - Base styles para mobile */
+@media screen and (max-width: 768px) {
+    .portal-container {
+        max-width: 100%;
+        padding: 10px;
+        margin: 0;
+    }
+
+    .page-title {
+        font-size: 1.4em;
+        text-align: center;
+        margin-bottom: 20px;
+        padding: 15px 10px 10px 10px;
+    }
+
+    /* Tabs responsivas */
+    .tabs {
+        flex-direction: column;
+        gap: 5px;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .tab-button {
+        padding: 12px 15px;
+        font-size: 14px;
+        text-align: center;
+        border-radius: 6px;
+        margin-bottom: 5px;
+    }
+
+    .tab-button i {
+        margin-right: 8px;
+    }
+
+    /* Service cards mobile */
+    .service-card {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+    }
+
+    .service-card h3 {
+        font-size: 1.1em;
+        line-height: 1.3;
+        margin-bottom: 12px;
+        word-wrap: break-word;
+    }
+
+    .service-card p {
+        font-size: 0.9em;
+        margin: 6px 0;
+        line-height: 1.4;
+    }
+
+    /* Status badges mobile */
+    .status {
+        display: inline-block;
+        padding: 4px 8px;
+        font-size: 0.8em;
+        border-radius: 12px;
+        margin: 5px 0;
+    }
+
+    /* Progress bar mobile */
+    .progresso-bar {
+        height: 8px;
+        margin: 10px 0;
+        border-radius: 6px;
+    }
+
+    /* Buttons mobile */
+    .confirm-button {
+        width: 100%;
+        padding: 12px;
+        font-size: 0.9em;
+        margin-top: 10px;
+        border-radius: 6px;
+        text-align: center;
+    }
+
+    /* Avaliação form mobile */
+    .avaliacao-form {
+        padding: 15px;
+        margin-top: 10px;
+        border-radius: 8px;
+    }
+
+    .avaliacao-form h3 {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+
+    .estrelas {
+        font-size: 24px;
+        text-align: center;
+        margin: 15px 0;
+        padding: 10px 0;
+    }
+
+    .estrelas span {
+        margin: 0 3px;
+        padding: 5px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .avaliacao-form textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 6px;
+        resize: vertical;
+        box-sizing: border-box;
+    }
+
+    .avaliacao-form button {
+        width: 100%;
+        padding: 12px;
+        font-size: 0.9em;
+        margin-top: 10px;
+        border-radius: 6px;
+    }
+
+    /* Comentários mobile */
+    .avaliacao-feita {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .comentario-texto {
+        padding: 10px;
+        font-size: 0.9em;
+        line-height: 1.4;
+        border-radius: 6px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    /* Ícones mobile */
+    .service-card i {
+        margin-right: 6px;
+    }
+
+    /* Ajustes para textos longos */
+    .service-card h3,
+    .service-card p {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+}
+
+/* Tablet - 769px a 1024px */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .portal-container {
+        max-width: 95%;
+        padding: 15px;
+    }
+
+    .page-title {
+        font-size: 1.6em;
+    }
+
+    .tabs {
+        padding: 8px;
+    }
+
+    .tab-button {
+        padding: 14px 18px;
+        font-size: 15px;
+    }
+
+    .service-card {
+        padding: 20px;
+    }
+
+    .service-card h3 {
+        font-size: 1.2em;
+    }
+}
+
+/* Desktop - acima de 1024px */
+@media screen and (min-width: 1025px) {
+    .portal-container {
+        max-width: 1200px;
+        padding: 20px;
+    }
+
+    .tabs {
+        flex-direction: row;
+    }
+
+    .tab-button {
+        flex: 1;
+    }
+}
+
+/* Ajustes específicos para telas muito pequenas (< 480px) */
+@media screen and (max-width: 480px) {
+    .portal-container {
+        padding: 8px;
+    }
+
+    .page-title {
+        font-size: 1.2em;
+        padding: 10px 5px;
+    }
+
+    .tabs {
+        padding: 8px;
+        margin-bottom: 15px;
+    }
+
+    .tab-button {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    .service-card {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .service-card h3 {
+        font-size: 1em;
+        margin-bottom: 10px;
+    }
+
+    .service-card p {
+        font-size: 0.85em;
+        margin: 5px 0;
+    }
+
+    .estrelas {
+        font-size: 20px;
+    }
+
+    .estrelas span {
+        margin: 0 2px;
+        padding: 3px;
+    }
+
+    .avaliacao-form {
+        padding: 12px;
+    }
+
+    .avaliacao-form textarea {
+        min-height: 70px;
+        font-size: 13px;
+    }
+
+    .confirm-button,
+    .avaliacao-form button {
+        padding: 10px;
+        font-size: 0.85em;
+    }
+}
+
+/* Orientação landscape em mobile */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .tabs {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .tab-button {
+        flex: 1;
+        min-width: calc(33.333% - 10px);
+        margin-bottom: 5px;
+    }
+
+    .service-card {
+        padding: 12px;
+    }
+
+    .page-title {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+}
+
+/* Melhorias de acessibilidade para touch */
+@media (hover: none) and (pointer: coarse) {
+    .tab-button {
+        min-height: 44px;
+        padding: 12px 15px;
+    }
+
+    .confirm-button,
+    .avaliacao-form button {
+        min-height: 44px;
+        padding: 12px 20px;
+    }
+
+    .estrelas span {
+        min-width: 32px;
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 2px;
+    }
+}
+
+/* Fallback extra: garante espaço no final de abas longas para evitar sobreposição do footer */
+.tab-content {
+    padding-bottom: calc(var(--footer-height, 60px) + 120px) !important;
+}
+
+/* Portal container fallback padding (agressivo) */
+.portal-container {
+    padding-bottom: calc(var(--footer-height, 60px) + 120px) !important;
+}
+
+/* Força margem inferior nos service-cards (corrige overrides inesperados) */
+.portal-container .service-card,
+.tab-content .service-card {
+    display: block !important;
+    margin-bottom: 20px !important;
+}
+
+/* Spacer used to ensure historico has extra space for fixed footer */
+.footer-spacer {
+    display: block;
+    width: 100%;
+    height: 0px; /* set by JS */
+    pointer-events: none;
+    visibility: visible;
+}
+
+/* Ajustes para tema escuro em mobile */
+@media screen and (max-width: 768px) {
+    [data-theme='dark'] .service-card {
+        background: var(--container-dark-bg);
+        border-left-color: var(--primary-light);
+    }
+
+    [data-theme='dark'] .avaliacao-form {
+        background: var(--background-dark);
+    }
+
+    [data-theme='dark'] .comentario-texto {
+        background: var(--background-dark);
+        border-left-color: var(--accent-color);
+    }
+
+    [data-theme='dark'] .tabs {
+        background: var(--container-dark-bg);
+    }
+
+    [data-theme='dark'] .tab-button.active {
+        background: var(--primary-light);
+    }
+}
