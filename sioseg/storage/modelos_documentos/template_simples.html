@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { 
+            font-family: 'Times New Roman', serif; 
+            margin: 2cm; 
+            line-height: 1.5;
+        }
+        .header { 
+            text-align: center; 
+            border-bottom: 2px solid #000; 
+            padding-bottom: 10px; 
+            margin-bottom: 20px; 
+        }
+        .title { 
+            font-size: 18pt; 
+            font-weight: bold; 
+            margin: 10px 0; 
+        }
+        .os-number { 
+            font-size: 14pt; 
+            margin: 5px 0; 
+        }
+        .section { 
+            margin: 15px 0; 
+            page-break-inside: avoid; 
+        }
+        .section-title { 
+            font-weight: bold; 
+            font-size: 12pt; 
+            text-decoration: underline; 
+            margin-bottom: 8px; 
+        }
+        .field { 
+            margin: 5px 0; 
+        }
+        .field-label { 
+            font-weight: bold; 
+            display: inline-block; 
+            width: 150px; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 10px 0; 
+        }
+        th, td { 
+            border: 1px solid #000; 
+            padding: 8px; 
+            text-align: left; 
+        }
+        th { 
+            background: #f0f0f0; 
+            font-weight: bold; 
+        }
+        .signature-area { 
+            margin-top: 40px; 
+            display: table; 
+            width: 100%; 
+        }
+        .signature-box { 
+            display: table-cell; 
+            width: 45%; 
+            text-align: center; 
+            vertical-align: bottom; 
+        }
+        .signature-line { 
+            border-top: 1px solid #000; 
+            margin-top: 50px; 
+            padding-top: 5px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">ORDEM DE SERVIÇO</div>
+        <div class="os-number">Nº {{ID_OS}}</div>
+        <div>Status: {{STATUS}}</div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">DADOS DO SERVIÇO</div>
+        <div class="field">
+            <span class="field-label">Tipo:</span> {{TIPO_SERVICO}}
+        </div>
+        <div class="field">
+            <span class="field-label">Descrição:</span> {{SERVICO_PRESTADO}}
+        </div>
+        <div class="field">
+            <span class="field-label">Data Abertura:</span> {{DATA_ABERTURA}}
+        </div>
+        {{DATA_ENCERRAMENTO_FIELD}}
+    </div>
+
+    <div class="section">
+        <div class="section-title">CLIENTE</div>
+        <div class="field">
+            <span class="field-label">Nome:</span> {{NOME_CLIENTE}}
+        </div>
+        {{DOCUMENTO_FIELD}}
+        <div class="field">
+            <span class="field-label">Telefone:</span> {{TELEFONE}}
+        </div>
+        {{EMAIL_FIELD}}
+    </div>
+
+    <div class="section">
+        <div class="section-title">TÉCNICO RESPONSÁVEL</div>
+        <div class="field">
+            <span class="field-label">Nome:</span> {{NOME_TECNICO}}
+        </div>
+        {{TELEFONE_TECNICO_FIELD}}
+    </div>
+
+    {{DESCRICAO_PROBLEMA_SECTION}}
+    {{SOLUCAO_APLICADA_SECTION}}
+    {{MATERIAIS_SECTION}}
+
+    <div class="signature-area">
+        <div class="signature-box">
+            <div class="signature-line">Técnico Responsável</div>
+        </div>
+        <div style="display: table-cell; width: 10%;"></div>
+        <div class="signature-box">
+            <div class="signature-line">Cliente</div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; font-size: 10pt; text-align: center;">
+        Documento gerado em {{DATA_GERACAO}} pelo Sistema {{NOME_EMPRESA}}
+    </div>
+</body>
+</html>

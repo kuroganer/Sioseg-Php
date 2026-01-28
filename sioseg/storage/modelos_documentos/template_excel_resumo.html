@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; }
+        .header { background: #2980b9; color: white; padding: 10px; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { border: 1px solid #000; padding: 4px; font-size: 11px; }
+        th { background: #e0e0e0; font-weight: bold; }
+        .stats-table th { background: #2980b9; color: white; }
+        .section-title { background: #f0f0f0; padding: 5px; font-weight: bold; text-align: center; }
+        .footer { text-align: center; font-size: 10px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <table class="header">
+        <tr>
+            <td style="background: #2980b9; color: white; text-align: center; font-weight: bold; font-size: 14px;">
+                {{NOME_EMPRESA}} - RESUMO GERAL DE ORDENS DE SERVIÇO
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center; font-size: 12px;">
+                Período: {{PERIODO}}
+            </td>
+        </tr>
+    </table>
+
+    <table class="stats-table">
+        <tr>
+            <th colspan="4" class="section-title">ESTATÍSTICAS GERAIS</th>
+        </tr>
+        <tr>
+            <th>Total OS</th>
+            <th>Concluídas</th>
+            <th>Em Andamento</th>
+            <th>Abertas</th>
+        </tr>
+        <tr>
+            <td style="text-align: center; font-weight: bold;">{{TOTAL_OS}}</td>
+            <td style="text-align: center; font-weight: bold;">{{CONCLUIDAS}}</td>
+            <td style="text-align: center; font-weight: bold;">{{EM_ANDAMENTO}}</td>
+            <td style="text-align: center; font-weight: bold;">{{ABERTAS}}</td>
+        </tr>
+        <tr>
+            <th>Encerradas</th>
+            <th>Canceladas</th>
+            <th>Taxa Conclusão</th>
+            <th>Média Avaliação</th>
+        </tr>
+        <tr>
+            <td style="text-align: center; font-weight: bold;">{{ENCERRADAS}}</td>
+            <td style="text-align: center; font-weight: bold;">{{CANCELADAS}}</td>
+            <td style="text-align: center; font-weight: bold;">{{TAXA_CONCLUSAO}}%</td>
+            <td style="text-align: center; font-weight: bold;">{{MEDIA_AVALIACAO}}/5</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th colspan="5" class="section-title">PERFORMANCE DOS TÉCNICOS</th>
+        </tr>
+        <tr>
+            <th>Técnico</th>
+            <th>Total OS</th>
+            <th>Concluídas</th>
+            <th>Taxa Conclusão</th>
+            <th>Média Avaliação</th>
+        </tr>
+        {{PERFORMANCE_TECNICOS_ROWS}}
+    </table>
+
+    <table>
+        <tr>
+            <th colspan="3" class="section-title">PRODUTOS MAIS UTILIZADOS</th>
+        </tr>
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade Usada</th>
+            <th>Frequência de Uso</th>
+        </tr>
+        {{TOP_PRODUTOS_ROWS}}
+    </table>
+
+    <table>
+        <tr>
+            <td style="text-align: center; font-size: 10px; color: #666;">
+                Relatório gerado em {{DATA_GERACAO}} pelo Sistema {{NOME_EMPRESA}}
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
+<head>
+    <meta charset="UTF-8">
+    <meta name="ProgId" content="Word.Document">
+    <meta name="Generator" content="Microsoft Word 15">
+    <meta name="Originator" content="Microsoft Word 15">
+    <!--[if !mso]>
+    <style>
+        v\:* {behavior:url(#default#VML);}
+        o\:* {behavior:url(#default#VML);}
+        w\:* {behavior:url(#default#VML);}
+        .shape {behavior:url(#default#VML);}
+    </style>
+    <![endif]-->
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        body {
+            font-family: 'Calibri', sans-serif;
+            font-size: 11pt;
+            line-height: 1.2;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .header h2 {
+            margin: 5px 0 0 0;
+            font-size: 20pt;
+            font-weight: bold;
+        }
+        .header h3 {
+            margin: 5px 0 0 0;
+            font-size: 14pt;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 12pt;
+            text-align: center;
+            margin: 15px 0;
+            width: 100%;
+            box-sizing: border-box;
+            color: white;
+        }
+        .section {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .section-header {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            font-weight: bold;
+            font-size: 12pt;
+            color: #2c3e50;
+            border-bottom: 1px solid #ddd;
+        }
+        .section-content {
+            padding: 15px;
+        }
+        .field-row {
+            display: table;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .field-label {
+            display: table-cell;
+            width: 180px;
+            font-weight: bold;
+            color: #34495e;
+            vertical-align: top;
+            padding-right: 10px;
+        }
+        .field-value {
+            display: table-cell;
+            vertical-align: top;
+            color: #2c3e50;
+        }
+        .materials-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        .materials-table th {
+            background: #34495e;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .materials-table td {
+            padding: 10px 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .materials-table .text-left {
+            text-align: left;
+        }
+        .materials-table .text-right {
+            text-align: right;
+        }
+        .materials-table .total-row {
+            background: #ecf0f1;
+            font-weight: bold;
+        }
+        .text-area {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+            line-height: 1.4;
+        }
+        .rating {
+            font-size: 18pt;
+            color: #f39c12;
+        }
+        .footer {
+            text-align: center;
+            font-size: 9pt;
+            color: #7f8c8d;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ecf0f1;
+        }
+        .logo-space {
+            height: 60px;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMjk4MGI5Ii8+Cjx0ZXh0IHg9IjUwIiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U0lPU0VHPC90ZXh0Pgo8L3N2Zz4K') no-repeat center;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-space"></div>
+    
+    <div class="header">
+        <h1>SIOSEG - SISTEMA INTEGRADO DE ORDENS DE SERVIÇO</h1>
+        <h2>ORDEM DE SERVIÇO</h2>
+        <h3>Nº {{ID_OS}}</h3>
+    </div>
+    <div class="status-badge" style="background: {{STATUS_COLOR}}; /* Template variable */">
+        STATUS: {{STATUS}}
+    </div>
+
+    <div class="section">
+        <div class="section-header">📋 INFORMAÇÕES DA ORDEM DE SERVIÇO</div>
+        <div class="section-content">
+            <div class="field-row">
+                <div class="field-label">Tipo de Serviço:</div>
+                <div class="field-value">{{TIPO_SERVICO}}</div>
+            </div>
+            <div class="field-row">
+                <div class="field-label">Data de Abertura:</div>
+                <div class="field-value">{{DATA_ABERTURA}}</div>
+            </div>
+            {{DATA_ENCERRAMENTO_FIELD}}
+            {{PRIORIDADE_FIELD}}
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">📋 SERVIÇO PRESTADO/OBSERVAÇÃO</div>
+        <div class="section-content">
+            <div class="text-area">
+                {{SERVICO_PRESTADO}}
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">👤 DADOS DO CLIENTE</div>
+        <div class="section-content">
+            <div class="field-row">
+                <div class="field-label">Nome/Razão Social:</div>
+                <div class="field-value">{{NOME_CLIENTE}}</div>
+            </div>
+            {{DOCUMENTO_FIELD}}
+            <div class="field-row">
+                <div class="field-label">Telefone:</div>
+                <div class="field-value">{{TELEFONE}}</div>
+            </div>
+            {{EMAIL_FIELD}}
+            {{ENDERECO_FIELD}}
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">🔧 TÉCNICO RESPONSÁVEL</div>
+        <div class="section-content">
+            <div class="field-row">
+                <div class="field-label">Nome:</div>
+                <div class="field-value">{{NOME_TECNICO}}</div>
+            </div>
+            {{TELEFONE_TECNICO_FIELD}}
+        </div>
+    </div>
+
+    {{DESCRICAO_PROBLEMA_SECTION}}
+    {{SOLUCAO_APLICADA_SECTION}}
+    {{MATERIAIS_SECTION}}
+    {{AVALIACAO_SECTION}}
+
+    <div class="footer">
+        <p>Relatório gerado em {{DATA_GERACAO}} pelo Sistema SIOSeG</p>
+        <p>Este documento foi gerado automaticamente e possui validade legal.</p>
+    </div>
+</body>
+</html>

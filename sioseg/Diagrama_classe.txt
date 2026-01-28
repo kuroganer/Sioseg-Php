@@ -1,0 +1,166 @@
+classDiagram
+    direction LR
+
+    class User {
+        +int id_usu
+        +string nome_usu
+        +string cpf_usu
+        +string rg_usu
+        +string rg_emissor_usu
+        +date data_expedicao_rg_usu
+        +date data_nascimento_usu
+        +string email_usu
+        +string senha_hash_usu
+        +string perfil
+        +string status
+        +string tel1_usu
+        +string tel2_usu
+        +string tel3_usu
+        +criar(dados)
+        +buscarPorId(id)
+        +buscarPorEmail(email)
+        +obterTodos()
+        +atualizarUsuario(id, dados)
+        +alterarStatus(id, status)
+        +buscarPorNome(nome)
+        +verificarCpfDuplicado(cpf, excludeId)
+        +verificarEmailDuplicado(email, excludeId)
+    }
+
+    class Cliente {
+        +int id_cli
+        +string nome_cli
+        +string nome_social
+        +string razao_social
+        +string tipo_pessoa
+        +string cpf_cli
+        +string rg_cli
+        +string rg_emissor_cli
+        +date data_expedicao_rg_cli
+        +date data_nascimento_cli
+        +string cnpj
+        +string email_cli
+        +string senha_hash_cli
+        +string tel1_cli
+        +string tel2_cli
+        +string endereco
+        +string logradouro
+        +string num_end
+        +string complemento
+        +string bairro
+        +string cidade
+        +string uf
+        +string cep
+        +string ponto_referencia
+        +string tipo_moradia
+        +string status
+        +criar(dados)
+        +buscarPorId(id)
+        +buscarPorEmail(email)
+        +obterTodos()
+        +atualizarCliente(id, dados)
+        +alterarStatus(id, status)
+        +buscarPorNome(nome)
+        +verificarCpfDuplicado(cpf, excludeId)
+        +verificarCnpjDuplicado(cnpj, excludeId)
+    }
+
+    class Tecnico {
+        +int id_tec
+        +string nome_tec
+        +string cpf_tec
+        +string rg_tec
+        +string rg_emissor_tec
+        +date data_expedicao_rg_tec
+        +date data_nascimento_tec
+        +string email_tec
+        +string senha_hash_tec
+        +string tel_pessoal
+        +string tel_empresa
+        +string status
+        +criar(dados)
+        +buscarPorId(id)
+        +buscarPorEmail(email)
+        +obterTodos()
+        +atualizarTecnico(id, dados)
+        +alterarStatus(id, status)
+        +buscarPorNome(nome)
+        +verificarCpfDuplicado(cpf, excludeId)
+        +verificarEmailDuplicado(email, excludeId)
+    }
+
+    class OrdemServico {
+        +int id_os
+        +int id_cli_fk
+        +int id_tec_fk
+        +int id_usu_fk
+        +string servico_prestado
+        +string tipo_servico
+        +string status
+        +string conclusao_cliente
+        +string conclusao_tecnico
+        +datetime data_abertura
+        +datetime data_agendamento
+        +datetime data_encerramento
+        +criar(dados)
+        +buscarPorId(id)
+        +obterTodos()
+        +atualizarOS(id, dados)
+        +alterarStatus(id, status)
+        +atualizarConclusao(id, perfil)
+        +buscarPorCliente(id_cli)
+        +buscarOSTecnicoDia(id_tec)
+        +buscarHistoricoPorTecnico(id_tec)
+        +buscarOSAtrasadas(id_tec)
+    }
+
+    class Produto {
+        +int id_prod
+        +string nome
+        +string marca
+        +string modelo
+        +string descricao
+        +int qtde
+        +string status
+        +criar(dados)
+        +buscarPorId(id)
+        +obterTodos()
+        +atualizarProduto(id, dados)
+        +alterarStatus(id, status)
+        +incrementarEstoque(id, qtde)
+        +decrementarEstoqueSeDisponivel(id, qtde)
+    }
+
+    class MaterialUsado {
+        +int id_prod_fk
+        +int id_os_fk
+        +int qtd_usada
+        +adicionarOuAtualizarMaterial(id_os, id_prod, qtd)
+        +removerMaterial(id_os, id_prod)
+        +obterMateriaisPorOS(id_os)
+        +obterMaterialPorOSEProduto(id_os, id_prod)
+        +atualizarQuantidadeMaterial(id_os, id_prod, nova_qtd)
+    }
+
+    class AvaliacaoTecnica {
+        +int id_ava
+        +int id_os_fk
+        +int nota
+        +string comentario_ava
+        +datetime data_avaliacao
+        +criar(dados)
+        +buscarPorIdOS(id_os)
+        +buscarPorCliente(id_cli)
+    }
+
+    
+    Cliente "1" -- "0..*" OrdemServico : solicita
+    Tecnico "1" -- "0..*" OrdemServico : atende
+    User "1" -- "0..*" OrdemServico : cria/gerencia
+
+    OrdemServico "1" -- "0..1" AvaliacaoTecnica : é avaliada em
+
+    OrdemServico "1" -- "0..*" MaterialUsado : utiliza
+    Produto "1" -- "0..*" MaterialUsado : é utilizado em
+
+    

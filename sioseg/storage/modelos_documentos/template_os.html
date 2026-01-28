@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        /* Tipografia e reset leves */
+        body { font-family: Helvetica, Arial, sans-serif; margin: 0; padding: 8px; color: #222; font-size: 12px; }
+        .container { width: 100%; }
+
+        /* Cabeçalho */
+        .hdr-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+        .hdr-left { text-align: left; vertical-align: middle; }
+        .hdr-right { text-align: right; vertical-align: middle; font-size: 12px; }
+        .company { font-weight: bold; font-size: 14px; color: #1f5f8b; }
+        .subtitle { font-size: 11px; color: #444; }
+
+        /* Barra de status */
+        .status { color: #fff; font-weight: bold; text-align: center; padding: 6px 4px; margin-bottom: 8px; border-radius: 3px; }
+
+    /* Blocos e títulos (cores suavizadas para melhor leitura) */
+    .block { margin-bottom: 8px; }
+    /* background levemente azul claro, borda discreta para reduzir contraste com a fonte */
+    .block-title { background-color: #0b4a59; padding: 8px 10px; font-weight: 700; border: 1px solid #08363f; font-size: 12px; color: #ffffff; }
+    /* corpo com fundo branco e borda suave; texto escuro para legibilidade */
+    .block-body { background-color: #ffffff; border: 1px solid #dcdcdc; padding: 8px 10px; font-size: 11px; color: #0b1f23; }
+
+        /* Tabelas internas */
+        .info-table { width: 100%; border-collapse: collapse; font-size: 11px; border: 1px solid #dcdcdc; }
+        .info-table td { padding: 6px 8px; vertical-align: top; border: 1px solid #dcdcdc; }
+        /* labels escuras e nítidas */
+        .label { width: 34%; color: #0b4a59; font-weight: 700; }
+        .value { width: 66%; color: #000000; }
+
+        .materials-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+        .materials-table th, .materials-table td { border: 1px solid #dcdcdc; padding: 6px; font-size: 10px; }
+        .materials-table th { background-color: #f0f0f0; font-weight: bold; }
+
+        /* Rodapé */
+        .footer { font-size: 10px; color: #666; text-align: center; margin-top: 10px; }
+
+        /* Ajustes para impressão em PDF (TCPDF) */
+        img.logo { max-height: 40px; }
+    </style>
+</head>
+<body>
+
+    <table class="hdr-table">
+        <tr>
+            <td class="hdr-left">
+                <!-- Logo opcional: substitua por uma tag <img> se desejar -->
+                <div class="company">{{NOME_EMPRESA}}</div>
+                <div class="subtitle">Sistema Integrado de Ordens de Serviço</div>
+            </td>
+            <td class="hdr-right">
+                <div style="font-weight:bold; font-size:13px;">ORDEM DE SERVIÇO</div>
+                <div style="margin-top:4px;">Nº {{ID_OS}}</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Status como célula de tabela para compatibilidade com TCPDF -->
+    <table style="width:100%; border-collapse:collapse; margin-bottom:8px;">
+        <tr>
+            <td style="background-color: #2ecc71; color: #ffffff; text-align: center; font-weight: bold; padding: 6px 4px;">STATUS: {{STATUS}}</td>
+        </tr>
+    </table>
+
+    <!-- Informações principais -->
+    <div class="block">
+        <!-- Título em tabela para garantir background aplicado pelo TCPDF -->
+        <table style="width:100%; border-collapse:collapse;">
+            <tr>
+                <td style="background-color:#0b4a59; color:#ffffff; padding:8px 10px; font-weight:700; font-size:12px;">INFORMAÇÕES DA ORDEM</td>
+            </tr>
+        </table>
+        <table style="width:100%; border-collapse:collapse;">
+            <tr>
+                <td style="background-color:#ffffff; border:1px solid #dcdcdc; padding:8px 10px; font-size:11px; color:#0b1f23;">
+                    <table style="width:100%; border-collapse:collapse; font-size:11px; border:1px solid #dcdcdc;">
+                        <tr>
+                            <td style="width:34%; color:#0b4a59; font-weight:700; padding:6px 8px; vertical-align:top; border:1px solid #dcdcdc;">Tipo de Serviço</td>
+                            <td style="width:66%; color:#000000; padding:6px 8px; vertical-align:top; border:1px solid #dcdcdc;">{{TIPO_SERVICO}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width:34%; color:#0b4a59; font-weight:700; padding:6px 8px; vertical-align:top; border:1px solid #dcdcdc;">Data Abertura</td>
+                            <td style="width:66%; color:#000000; padding:6px 8px; vertical-align:top; border:1px solid #dcdcdc;">{{DATA_ABERTURA}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width:34%; color:#0b4a59; font-weight:700; padding:6px 8px; vertical-align:top; border:1px solid #dcdcdc;">Responsável</td>
+                            <td style="width:66%; color:#000000; padding:6px 8px; vertical-align:top; border:1px solid #dcdcdc;">{{RESPONSAVEL}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width:34%; color:#0b4a59; font-weight:700; padding:6px 8px; vertical-align:top; border:1px solid #dcdcdc;">Prioridade / Encerramento</td>
+                            <td style="width:66%; color:#000000; padding:6px 8px; vertical-align:top; border:1px solid #dcdcdc;">{{PRIORIDADE_FIELD}} {{DATA_ENCERRAMENTO_FIELD}}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Serviço prestado -->
+    <div class="block">
+        <table style="width:100%; border-collapse:collapse;">
+            <tr>
+                <td style="background-color:#0b4a59; color:#ffffff; padding:8px 10px; font-weight:700; font-size:12px;">SERVIÇO PRESTADO / OBSERVAÇÕES</td>
+            </tr>
+        </table>
+        <table style="width:100%; border-collapse:collapse;">
+            <tr>
+                <td style="background-color:#ffffff; border:1px solid #dcdcdc; padding:8px 10px; font-size:11px; color:#0b1f23;">{{SERVICO_PRESTADO}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Cliente / Técnico lado a lado em tabela -->
+    <div class="block">
+        <table style="width:100%; border-collapse:collapse;">
+            <tr>
+                <td style="background-color:#0b4a59; color:#ffffff; padding:8px 10px; font-weight:700; font-size:12px;">PARTES ENVOLVIDAS</td>
+            </tr>
+        </table>
+        <table style="width:100%; border-collapse:collapse;">
+            <tr>
+                <td style="background-color:#ffffff; border:1px solid #dcdcdc; padding:8px 10px; font-size:11px; color:#0b1f23;">
+                    <table style="width:100%; border-collapse:collapse; font-size:11px; border:1px solid #dcdcdc;">
+                        <tr>
+                            <td style="width:50%; vertical-align:top; border:1px solid #dcdcdc; padding:6px 8px;">
+                                <div style="font-weight:bold; margin-bottom:6px;">DADOS DO CLIENTE</div>
+                                <div><strong>Nome / Razão:</strong> {{NOME_CLIENTE}}</div>
+                                <div>{{DOCUMENTO_FIELD}}</div>
+                                <div><strong>Telefone:</strong> {{TELEFONE}}</div>
+                                <div>{{EMAIL_FIELD}}</div>
+                                <div>{{ENDERECO_FIELD}}</div>
+                            </td>
+                            <td style="width:50%; vertical-align:top; border:1px solid #dcdcdc; padding:6px 8px;">
+                                <div style="font-weight:bold; margin-bottom:6px;">TÉCNICO RESPONSÁVEL</div>
+                                <div><strong>Nome:</strong> {{NOME_TECNICO}}</div>
+                                <div>{{TELEFONE_TECNICO_FIELD}}</div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Seções opcionais já geradas pelo processador -->
+    {{DESCRICAO_PROBLEMA_SECTION}}
+    {{SOLUCAO_APLICADA_SECTION}}
+
+    <!-- Materiais e Avaliação (já montadas pelo backend) -->
+    {{MATERIAIS_SECTION}}
+    {{AVALIACAO_SECTION}}
+
+    <div class="footer">Relatório gerado em {{DATA_GERACAO}} pelo Sistema {{NOME_EMPRESA}}</div>
+
+</body>
+</html>
