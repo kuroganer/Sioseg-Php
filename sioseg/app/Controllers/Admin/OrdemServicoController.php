@@ -1,0 +1,680 @@
+<?php
+
+namespace App\Controllers\Admin;
+
+use App\Core\Controller;
+use App\Core\Session;
+use App\Models\OrdemServico;
+use App\Models\Cliente;
+use App\Models\Tecnico;
+use App\Models\Usuario;
+use App\Models\Produto;
+use App\Models\MaterialUsado;
+use App\Controllers\DashboardController; // Adicionar o use
+
+class OrdemServicoController extends Controller
+{
+    private OrdemServico $osModel;
+    private Cliente $clienteModel;
+    private Tecnico $tecnicoModel;
+    private Usuario $userModel;
+    private Produto $produtoModel;
+    private MaterialUsado $materialModel;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->osModel = new OrdemServico();
+        $this->clienteModel = new Cliente();
+        $this->tecnicoModel = new Tecnico();
+        $this->userModel = new Usuario();
+        $this->produtoModel = new Produto();
+        $this->materialModel = new MaterialUsado();
+        Session::exigirPermissao(['admin', 'funcionario']);
+    }
+
+    private function getBaseData(): array
+    {
+        return [
+            'userEmail' => Session::obter('email'),
+            'userProfile' => Session::obter('perfil'),
+            'menuItems' => DashboardController::getMenuForProfile(Session::obter('perfil'))
+        ];
+    }
+
+    // Listagem de OS
+    public function index()
+    {
+        $currentPage = (int)($_GET['page'] ?? 1);
+        $recordsPerPage = 50;
+        
+        $totalRecords = $this->osModel->contarTodos();
+        $pagination = new \App\Core\Pagination($currentPage, $totalRecords, $recordsPerPage, BASE_URL . 'admin/os');
+        
+        $osList = $this->osModel->obterTodosComPaginacao($pagination->getOffset(), $pagination->getLimit());
+        
+        $data = array_merge($this->getBaseData(), [
+            'osList' => $osList,
+            'pagination' => $pagination,
+            'sucesso' => Session::obter('sucesso'),
+            'erro' => Session::obter('erro')
+        ]);
+
+        Session::remover('sucesso');
+        Session::remover('erro');
+
+        $this->visualizacao('admin/os/index', $data);
+    }
+
+    // Formulário de cadastro
+    public function showRegisterForm()
+    {
+        $clientes = $this->clienteModel->obterTodos();
+        $tecnicos = $this->tecnicoModel->obterTodos();
+        $usuarios = $this->userModel->obterTodos();
+        $produtos = $this->produtoModel->obterTodos();
+        
+        // Busca o usuário logado pelo email
+        $currentUser = $this->userModel->buscarPorEmail(Session::obter('email'));
+
+        $data = array_merge($this->getBaseData(), [
+            'cadastro_erro' => Session::obter('cadastro_erro'),
+            'cadastro_sucesso' => Session::obter('cadastro_sucesso'),
+            'clientes' => $clientes,
+            'tecnicos' => $tecnicos,
+            'usuarios' => $usuarios,
+            'produtos' => $produtos,
+            'currentUserId' => $currentUser ? $currentUser->id_usu : null,
+            'currentUserEmail' => Session::obter('email')
+        ]);
+
+        Session::remover('cadastro_erro');
+        Session::remover('cadastro_sucesso');
+
+        $this->visualizacao('admin/os/os_register', $data);
+    }
+
+    // Processa cadastro
+    public function processRegister()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'dashboard');
+            exit();
+        }
+
+        $data = [
+            'servico_prestado' => strip_tags($_POST['servico_prestado'] ?? ''),
+            'tipo_servico' => $_POST['tipo_servico'] ?? 'instalacao',
+            'status' => $_POST['status'] ?? 'aberta',
+            // Data de abertura agora é gerada pelo servidor para evitar inconsistências
+            'data_abertura' => date('Y-m-d H:i:s'),
+            'data_agendamento' => $_POST['data_agendamento'] ?? date('Y-m-d H:i:s'),
+            'data_encerramento' => !empty($_POST['data_encerramento']) ? $_POST['data_encerramento'] : null,
+            'conclusao_cliente' => $_POST['conclusao_cliente'] ?? 'pendente',
+            'conclusao_tecnico' => $_POST['conclusao_tecnico'] ?? 'pendente',
+            'id_tec_fk' => $_POST['id_tec_fk'] ?? null,
+            'id_usu_fk' => $_POST['id_usu_fk'] ?? null,
+            'id_cli_fk' => $_POST['id_cli_fk'] ?? null
+        ];
+
+        if (empty($data['tipo_servico']) || empty($data['id_tec_fk']) || empty($data['id_usu_fk']) || empty($data['id_cli_fk'])) {
+            Session::definir('cadastro_erro', 'Todos os campos obrigatórios devem ser preenchidos.');
+            header('Location: ' . BASE_URL . 'admin/os/register');
+            exit();
+        }
+
+        try {
+            $osId = $this->osModel->criar($data);
+
+            if (!$osId) {
+                throw new \Exception('Falha ao criar a Ordem de Serviço e obter seu ID.');
+            }
+
+            if (isset($_POST['produtos']) && is_array($_POST['produtos'])) {
+                foreach ($_POST['produtos'] as $produto) {
+                    if (!empty($produto['id_prod']) && !empty($produto['quantidade'])) {
+                        $id_prod = (int)$produto['id_prod'];
+                        $quantidade = (int)$produto['quantidade'];
+
+                        // Validações robustas para admin
+                        if ($quantidade < 0) {
+                            throw new \Exception('Quantidade não pode ser negativa para o produto ID: ' . $id_prod);
+                        }
+                        
+                        if ($quantidade === 0) {
+                            continue; // Pula produtos com quantidade zero
+                        }
+
+                        $produtoInfo = $this->produtoModel->buscarPorId($id_prod);
+                        if (!$produtoInfo) {
+                            throw new \Exception('Produto não encontrado: ID ' . $id_prod);
+                        }
+                        
+                        if ($produtoInfo->qtde < $quantidade) {
+                            throw new \Exception('Estoque insuficiente para o produto "' . $produtoInfo->nome . '". Disponível: ' . $produtoInfo->qtde . ', Solicitado: ' . $quantidade);
+                        }
+                        
+                        if ($produtoInfo->qtde >= $quantidade) {
+                            $this->materialModel->adicionarMaterial($osId, $id_prod, $quantidade);
+                            $this->produtoModel->atualizarEstoque($id_prod, $produtoInfo->qtde - $quantidade);
+                        }
+                    }
+                }
+            }
+
+            Session::definir('cadastro_sucesso', 'Ordem de serviço criada com sucesso!');
+            header('Location: ' . BASE_URL . 'admin/os/register');
+            exit();
+        } catch (\Exception $e) {
+            if (strpos($e->getMessage(), 'Horário indisponível') !== false) {
+                Session::definir('cadastro_erro', $e->getMessage());
+            } else {
+                error_log('Erro ao criar OS: ' . $e->getMessage());
+                Session::definir('cadastro_erro', 'Erro ao cadastrar OS.');
+            }
+            header('Location: ' . BASE_URL . 'admin/os/register');
+            exit();
+        }
+    }
+
+    // Wrappers PT
+    public function processarCadastro()
+    {
+        return $this->processRegister();
+    }
+
+    /**
+     * Wrapper em português para exibir o formulário de cadastro.
+     * Mantém compatibilidade com rotas que apontem para a versão PT.
+     */
+    public function mostrarFormularioCadastro()
+    {
+        return $this->showRegisterForm();
+    }
+
+    // Formulário de edição
+    public function showEditForm(int $id)
+    {
+        $os = $this->osModel->buscarPorId($id);
+        if (!$os) {
+            header("HTTP/1.0 404 Not Found");
+            $this->visualizacao('errors/404');
+            exit();
+        }
+
+        $clientes = $this->clienteModel->obterTodos();
+        $tecnicos = $this->tecnicoModel->obterTodos();
+        $usuarios = $this->userModel->obterTodos();
+        $produtos = $this->produtoModel->obterTodos();
+        $materiais = $this->materialModel->obterMateriaisPorOS($id);
+        
+        // Busca o usuário logado pelo email
+        $currentUser = $this->userModel->buscarPorEmail(Session::obter('email'));
+
+        $data = array_merge($this->getBaseData(), [
+            'os' => $os,
+            'edicao_erro' => Session::obter('edicao_erro'),
+            'edicao_sucesso' => Session::obter('edicao_sucesso'),
+            'clientes' => $clientes,
+            'tecnicos' => $tecnicos,
+            'usuarios' => $usuarios,
+            'produtos' => $produtos,
+            'materiais' => $materiais,
+            'currentUserId' => $currentUser ? $currentUser->id_usu : null,
+            'currentUserEmail' => Session::obter('email')
+        ]);
+
+        Session::remover('edicao_erro');
+        Session::remover('edicao_sucesso');
+
+        $this->visualizacao('admin/os/edit', $data);
+    }
+
+    /**
+     * Wrapper em português para exibir o formulário de edição.
+     * Uso: rotas que chamem a ação PT podem apontar para este método.
+     */
+    public function mostrarFormularioEdicao(int $id)
+    {
+        return $this->showEditForm($id);
+    }
+
+    // Processa atualização
+    public function atualizar(int $id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'dashboard');
+            exit();
+        }
+
+        $data = [
+            'servico_prestado' => strip_tags($_POST['servico_prestado'] ?? ''),
+            'tipo_servico' => $_POST['tipo_servico'] ?? null,
+            'status' => $_POST['status'] ?? null,
+            // Do not accept data_abertura from admin updates to preserve audit trail
+            'data_agendamento' => $_POST['data_agendamento'] ?? null,
+            'data_encerramento' => !empty($_POST['data_encerramento']) ? $_POST['data_encerramento'] : null,
+            'conclusao_cliente' => $_POST['conclusao_cliente'] ?? null,
+            'conclusao_tecnico' => $_POST['conclusao_tecnico'] ?? null,
+            'id_tec_fk' => $_POST['id_tec_fk'] ?? null,
+            'id_usu_fk' => $_POST['id_usu_fk'] ?? null,
+            'id_cli_fk' => $_POST['id_cli_fk'] ?? null
+        ];
+
+        $updateData = array_filter($data, function($v) { return $v !== null; });
+
+        if (empty($updateData['tipo_servico']) || empty($updateData['id_tec_fk']) || empty($updateData['id_usu_fk']) || empty($updateData['id_cli_fk'])) {
+            Session::definir('edicao_erro', 'Campos obrigatórios não podem estar vazios.');
+            header('Location: ' . BASE_URL . 'admin/os/edit/' . $id);
+            exit();
+        }
+
+        try {
+            // Verifica mudanças de status
+            $osAtual = $this->osModel->buscarPorId($id);
+            $isReativacao = $osAtual && $osAtual->status === 'encerrada' && 
+                           in_array($updateData['status'], ['aberta', 'em andamento']);
+            $isEncerramento = $osAtual && $osAtual->status !== 'encerrada' && 
+                             $updateData['status'] === 'encerrada';
+            
+            error_log("OS $id - Status atual: {$osAtual->status}, Novo status: {$updateData['status']}, Encerramento: " . ($isEncerramento ? 'SIM' : 'NÃO'));
+            
+            if ($isReativacao) {
+                // Reativação automática: limpa data de encerramento e reseta conclusões
+                $updateData['data_encerramento'] = null;
+                $updateData['conclusao_cliente'] = 'pendente';
+                $updateData['conclusao_tecnico'] = 'pendente';
+                
+                // Retorna materiais ao estoque
+                $materiais = $this->materialModel->obterMateriaisPorOS($id);
+                foreach ($materiais as $material) {
+                    $produto = $this->produtoModel->buscarPorId($material->id_prod);
+                    if ($produto) {
+                        $this->produtoModel->atualizarEstoque($material->id_prod, $produto->qtde + $material->qtd_usada);
+                    }
+                }
+                // Remove todos os materiais da OS
+                $this->materialModel->removerTodosMateriaisDaOS($id);
+            }
+            
+            if ($isEncerramento) {
+                // Retorna materiais ao estoque quando encerra
+                $materiais = $this->materialModel->obterMateriaisPorOS($id);
+                error_log("Encerrando OS $id - Materiais encontrados: " . count($materiais));
+                foreach ($materiais as $material) {
+                    $produto = $this->produtoModel->buscarPorId($material->id_prod);
+                    if ($produto) {
+                        $novoEstoque = $produto->qtde + $material->qtd_usada;
+                        $this->produtoModel->atualizarEstoque($material->id_prod, $novoEstoque);
+                        error_log("Produto {$material->id_prod}: estoque {$produto->qtde} + {$material->qtd_usada} = {$novoEstoque}");
+                    }
+                }
+                // Remove todos os materiais da OS
+                $this->materialModel->removerTodosMateriaisDaOS($id);
+                error_log("Materiais removidos da OS $id");
+            }
+            
+            // 1. Atualiza os dados principais da OS
+            $this->osModel->atualizarOS($id, $updateData);
+
+            // 2. Processa a edição/remoção dos materiais existentes
+            if (isset($_POST['materiais_existentes']) && is_array($_POST['materiais_existentes'])) {
+                foreach ($_POST['materiais_existentes'] as $idProd => $item) {
+                    $novaQuantidade = (int)($item['quantidade'] ?? 0);
+                    
+                    // Validação para quantidade negativa
+                    if ($novaQuantidade < 0) {
+                        throw new \Exception('Quantidade não pode ser negativa para o material existente ID: ' . $idProd);
+                    }
+                    
+                    $material = $this->materialModel->obterMaterialPorOSEProduto($id, $idProd);
+                    
+                    if ($material) {
+                        $diferenca = $material->qtd_usada - $novaQuantidade;
+                        
+                        // Validação adicional: se está aumentando a quantidade, verifica estoque
+                        if ($diferenca < 0) { // Aumentando quantidade
+                            $quantidadeAdicional = abs($diferenca);
+                            $produto = $this->produtoModel->buscarPorId($idProd);
+                            if (!$produto) {
+                                throw new \Exception('Produto não encontrado: ID ' . $idProd);
+                            }
+                            if ($produto->qtde < $quantidadeAdicional) {
+                                throw new \Exception('Estoque insuficiente para aumentar a quantidade do produto "' . $produto->nome . '". Disponível: ' . $produto->qtde . ', Adicional necessário: ' . $quantidadeAdicional);
+                            }
+                        }
+
+                        // Se a quantidade mudou, atualiza o estoque e a tabela de materiais
+                        if ($diferenca != 0) {
+                            $produto = $this->produtoModel->buscarPorId($idProd);
+                            if ($produto) {
+                                // Devolve a quantidade que foi removida ou retira o extra
+                                $this->produtoModel->atualizarEstoque($idProd, $produto->qtde + $diferenca);
+                            }
+                            
+                            if ($novaQuantidade > 0) {
+                                $this->materialModel->atualizarQuantidadeMaterial($id, $idProd, $novaQuantidade);
+                            } else {
+                                $this->materialModel->removerMaterial($id, $idProd);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 3. Processa a adição de novos materiais
+            if (isset($_POST['novos_produtos']) && is_array($_POST['novos_produtos'])) {
+                foreach ($_POST['novos_produtos'] as $produto) {
+                    if (!empty($produto['id_prod']) && !empty($produto['quantidade'])) {
+                        $id_prod = (int)$produto['id_prod'];
+                        $quantidade = (int)$produto['quantidade'];
+
+                        // Validações robustas para novos materiais
+                        if ($quantidade < 0) {
+                            throw new \Exception('Quantidade não pode ser negativa para o novo produto ID: ' . $id_prod);
+                        }
+                        
+                        if ($quantidade === 0) {
+                            continue; // Pula produtos com quantidade zero
+                        }
+
+                        $produtoInfo = $this->produtoModel->buscarPorId($id_prod);
+                        if (!$produtoInfo) {
+                            throw new \Exception('Produto não encontrado: ID ' . $id_prod);
+                        }
+                        
+                        if ($produtoInfo->qtde < $quantidade) {
+                            throw new \Exception('Estoque insuficiente para o produto "' . $produtoInfo->nome . '". Disponível: ' . $produtoInfo->qtde . ', Solicitado: ' . $quantidade);
+                        }
+                        
+                        if ($produtoInfo->qtde >= $quantidade) {
+                            $this->materialModel->adicionarMaterial($id, $id_prod, $quantidade);
+                            $this->produtoModel->atualizarEstoque($id_prod, $produtoInfo->qtde - $quantidade);
+                        }
+                    }
+                }
+            }
+
+            $mensagem = 'Ordem de serviço atualizada com sucesso!';
+            if ($isReativacao) {
+                $mensagem = 'OS reativada com sucesso! Materiais retornados ao estoque, data de encerramento e conclusões resetadas.';
+            } elseif ($isEncerramento) {
+                $mensagem = 'OS encerrada com sucesso! Materiais retornados ao estoque.';
+            }
+            
+            Session::definir('edicao_sucesso', $mensagem);
+            header('Location: ' . BASE_URL . 'admin/os/edit/' . $id);
+            exit();
+        } catch (\Exception $e) {
+            if (strpos($e->getMessage(), 'Horário indisponível') !== false) {
+                Session::definir('edicao_erro', $e->getMessage());
+            } else {
+                error_log('Erro ao atualizar OS: ' . $e->getMessage());
+                Session::definir('edicao_erro', 'Erro ao atualizar OS.');
+            }
+            header('Location: ' . BASE_URL . 'admin/os/edit/' . $id);
+            exit();
+        }
+    }
+    
+    // Método para remover um material (Chamado do HTML via POST)
+    public function removerMaterial(int $id_os, int $id_prod)
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'dashboard');
+            exit();
+        }
+
+        try {
+            // Verifica se a OS está concluída
+            $os = $this->osModel->buscarPorId($id_os);
+            if (!$os) {
+                Session::definir('erro', 'OS não encontrada.');
+                header('Location: ' . BASE_URL . 'admin/os');
+                exit();
+            }
+
+            if (strtolower($os->status) === 'concluida') {
+                Session::definir('erro', 'Não é possível remover materiais de uma OS concluída.');
+                header('Location: ' . BASE_URL . 'admin/os/edit/' . $id_os);
+                exit();
+            }
+
+            $material = $this->materialModel->obterMaterialPorOSEProduto($id_os, $id_prod);
+            if (!$material) {
+                Session::definir('erro', 'Material não encontrado nesta OS.');
+                header('Location: ' . BASE_URL . 'admin/os/edit/' . $id_os);
+                exit();
+            }
+
+            $this->materialModel->removerMaterial($id_os, $id_prod);
+
+            $produto = $this->produtoModel->buscarPorId($id_prod);
+            if ($produto) {
+                $this->produtoModel->atualizarEstoque($id_prod, $produto->qtde + $material->qtd_usada);
+            }
+
+            Session::definir('sucesso', 'Material removido com sucesso da OS! Estoque restaurado.');
+            header('Location: ' . BASE_URL . 'admin/os/edit/' . $id_os);
+            exit();
+        } catch (\Exception $e) {
+            Session::definir('erro', $e->getMessage());
+            header('Location: ' . BASE_URL . 'admin/os/edit/' . $id_os);
+            exit();
+        }
+    }
+
+    // Nome alternativo em inglês/português para compatibilidade com views antigas
+    public function removeMaterial(int $id_os, int $id_prod)
+    {
+        return $this->removerMaterial($id_os, $id_prod);
+    }
+
+    /**
+     * Busca OS pelo nome do cliente.
+     */
+    public function pesquisar()
+    {
+        $searchTerm = $_GET['nome'] ?? '';
+
+        $osList = [];
+        if (!empty($searchTerm)) {
+            $osList = $this->osModel->buscarPorNomeCliente($searchTerm);
+        }
+
+        $data = array_merge($this->getBaseData(), [
+            'osList' => $osList,
+            'searchTerm' => $searchTerm
+        ]);
+
+        $this->visualizacao('admin/os/os_search', $data);
+    }
+
+    /**
+     * Exibe o calendário de Ordens de Serviço.
+     */
+    public function calendario()
+    {
+        $month = $_GET['month'] ?? date('m');
+        $year  = $_GET['year'] ?? date('Y');
+
+        $month = (int)$month;
+        $year  = (int)$year;
+
+        $date = new \DateTime("$year-$month-01");
+
+        $prevMonth = (new \DateTime("$year-$month-01"))->modify('-1 month');
+        $nextMonth = (new \DateTime("$year-$month-01"))->modify('+1 month');
+
+        $monthName    = $this->getMonthName($month);
+        $daysInMonth  = $date->format('t');
+        $startDayOfWeek = $date->format('w');
+
+        $osStats = $this->osModel->obterEstatisticasOSPorMes($year, $month);
+
+        $data = array_merge($this->getBaseData(), [
+            'pageTitle' => 'Calendário de Ordens de Serviço',
+            'month' => $month,
+            'year' => $year,
+            'monthName' => $monthName,
+            'daysInMonth' => $daysInMonth,
+            'startDayOfWeek' => $startDayOfWeek,
+            'osStats' => $osStats,
+            'nav' => [
+                'prev' => ['month' => $prevMonth->format('m'), 'year' => $prevMonth->format('Y')],
+                'next' => ['month' => $nextMonth->format('m'), 'year' => $nextMonth->format('Y')]
+            ]
+        ]);
+
+        $this->visualizacao('admin/os/calendario', $data);
+    }
+
+    /**
+     * Retorna o nome do mês em português.
+     */
+    private function getMonthName(int $monthNumber): string
+    {
+        $months = [
+            1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Março', 4 => 'Abril',
+            5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto',
+            9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
+        ];
+        return $months[$monthNumber] ?? 'Mês Inválido';
+    }
+
+    /**
+     * Retorna os detalhes das OS de um dia específico via AJAX para o calendário.
+     */
+    public function detalhes()
+    {
+        // Verifica se é uma requisição AJAX
+        if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+            http_response_code(403);
+            echo "Acesso negado.";
+            return;
+        }
+
+        $date = $_GET['date'] ?? null;
+        if (!$date) {
+            http_response_code(400);
+            echo "Data não fornecida.";
+            return;
+        }
+
+        $data['os_list'] = $this->osModel->buscarPorData($date);
+        
+        // Renderiza a view parcial da tabela de detalhes
+        $this->visualizacao('admin/os/_os_details_table', $data, true);
+    }
+
+    /**
+     * Retorna os detalhes das OS de um dia específico via AJAX para o calendário.
+     */
+    public function obterDetalhesOSPorDia()
+    {
+        // Verifica se é uma requisição AJAX
+        if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+            http_response_code(403);
+            echo "Acesso negado.";
+            return;
+        }
+
+        $date = $_GET['date'] ?? null;
+        if (!$date) {
+            http_response_code(400);
+            echo "Data não fornecida.";
+            return;
+        }
+
+        $data['os_list'] = $this->osModel->buscarPorData($date);
+        
+        // Renderiza a view parcial da tabela de detalhes
+        $this->visualizacao('admin/os/_os_details_table', $data, true);
+    }
+
+    /**
+     * Altera o status de uma OS
+     */
+    public function alterarStatus()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'admin/os');
+            exit();
+        }
+
+        $id = $_POST['id'] ?? null;
+        $novoStatus = $_POST['status'] ?? null;
+
+        if (!$id || !$novoStatus) {
+            Session::definir('erro', 'Dados inválidos para alteração de status.');
+            header('Location: ' . BASE_URL . 'admin/os');
+            exit();
+        }
+
+        try {
+            // Verifica se é encerramento para retornar materiais
+            $osAtual = $this->osModel->buscarPorId($id);
+            $isEncerramento = $osAtual && $osAtual->status !== 'encerrada' && $novoStatus === 'encerrada';
+            
+            if ($isEncerramento) {
+                // Retorna materiais ao estoque
+                $materiais = $this->materialModel->obterMateriaisPorOS($id);
+                foreach ($materiais as $material) {
+                    $produto = $this->produtoModel->buscarPorId($material->id_prod);
+                    if ($produto) {
+                        $this->produtoModel->atualizarEstoque($material->id_prod, $produto->qtde + $material->qtd_usada);
+                    }
+                }
+                // Remove materiais da OS
+                $this->materialModel->removerTodosMateriaisDaOS($id);
+            }
+            
+            $this->osModel->alterarStatus($id, $novoStatus);
+            
+            $mensagem = $isEncerramento ? 
+                'OS encerrada com sucesso! Materiais retornados ao estoque.' : 
+                'Status da OS alterado com sucesso!';
+            
+            Session::definir('sucesso', $mensagem);
+        } catch (\Exception $e) {
+            Session::definir('erro', 'Erro ao alterar status: ' . $e->getMessage());
+        }
+
+        header('Location: ' . BASE_URL . 'admin/os');
+        exit();
+    }
+
+    /**
+     * Retorna a avaliação (nota e comentário) de uma OS em JSON (apenas leitura).
+     */
+    public function obterAvaliacao()
+    {
+        if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+            http_response_code(403);
+            echo json_encode(['error' => 'Acesso negado.']);
+            return;
+        }
+
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        if (!$id) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID da OS não informado.']);
+            return;
+        }
+
+        $avaliacaoModel = new \App\Models\AvaliacaoTecnica();
+        $avaliacao = $avaliacaoModel->buscarPorIdOS($id);
+
+        if (!$avaliacao) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Nenhuma avaliação encontrada para esta OS.']);
+            return;
+        }
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'nota' => isset($avaliacao->nota) ? (int)$avaliacao->nota : null,
+            'comentario' => isset($avaliacao->comentario) ? $avaliacao->comentario : ''
+        ]);
+    }
+}
